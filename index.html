@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine?</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background: #ffe4e1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            transition: background 0.5s ease-in-out;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #d63384;
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .yes-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .no-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+        }
+
+        /* Fireworks */
+        .firework {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle, yellow, orange, red);
+            border-radius: 50%;
+            animation: explode 0.6s linear infinite;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(5);
+                opacity: 0;
+            }
+        }
+
+        /* Confetti */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            border-radius: 50%;
+            animation: fall 2s linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 id="question">Tanisha, will you be my Valentine? 💖</h1>
+
+    <div class="button-container">
+        <button class="yes-btn" onclick="acceptProposal()">Yes</button>
+        <button class="no-btn" onclick="askAgain()">No</button>
+    </div>
+
+    <script>
+        const questions = [
+            "Are you sure, Tanisha? 💔",
+            "Think again, Tanisha! 😢",
+            "I'll wait forever... but please say yes! 🥺",
+            "You're breaking my heart 💘, will you reconsider?",
+            "Come on, Tanisha, just say yes! 🥰",
+            "Let's make this Valentine's special! 💕",
+            "Saying no is illegal... at least in my heart court! ⚖️💖",
+            "I checked the weather… it says 100% chance of us being together! ☁️🌦️💘",
+            "Tanisha, are you WiFi? Because I feel a strong connection! 📡🥰",
+            "If you say no, I'll have to Google ‘how to stop loving someone’ 😭💔",
+            "Even ChatGPT agrees you should say YES! 🤖💌",
+            "Do you believe in love at first sight? Or should I ask you again? 😉",
+            "Breaking news: Tanisha finally says YES! Don’t make me a liar! 📰❤️",
+            "I promise unlimited hugs & chocolates if you say YES! 🍫🤗",
+            "You + Me = The cutest love story ever! Just say YES! 📖💕",
+            "If saying no was a sport, you’d be a champion by now! 🏆😂",
+            "I bet you look even prettier when you say YES! 😍",
+            "Be careful… every 'No' makes me fall harder for you! 😏💖",
+            "You’re my type… and I’m not talking about blood groups! 😘",
+            "This website is programmed to crash if you say No too many times! 💻🔥😂",
+            "You have two options: Say Yes or… say YES! No pressure. 😉",
+            "You're 99% perfect, just missing that 1%: Saying YES to me! 😏",
+            "Are we in a rom-com? Because this feels like the perfect love story! 🎬💖",
+            "Tanisha, did you just steal my heart? Because I can’t seem to find it anymore! 🔥❤️",
+            "The stars, the moon, and even the sun agree… we belong together! 🌙✨",
+            "Is your name Google? Because you have everything I’ve been searching for! 🥰💖",
+            "You can say no… but I’ll keep asking until my laptop battery dies! 🔋😂",
+            "If loving you is a crime, then I plead guilty! 🚔❤️",
+            "Okay, but imagine how cute we’d look together! 😘💖",
+            "If you say yes, I’ll give you a lifetime supply of smiles and cuddles! 🥰💖",
+            "No pressure, but my future happiness depends on your answer! 😜💘",
+            "Even Romeo and Juliet would root for us! 💑🔥",
+            "If I had a rupee for every time I thought about you, I'd be a millionaire! 💸💖",
+            "Did it hurt when you fell… right into my heart? 😘💘",
+            "A ‘No’ will reset this page. Don’t try me! 😂💻",
+        ];
+
+        let index = 0;
+
+        function askAgain() {
+            document.body.style.background = `#${Math.floor(Math.random() * 16777215).toString(16)}`; // Change background color randomly
+            if (index < questions.length) {
+                document.getElementById("question").innerText = questions[index];
+                index++;
+            } else {
+                document.getElementById("question").innerText = "Okay, now you're just teasing me! 🥰";
+                index = 0; // Reset so it loops
+            }
+        }
+
+        function acceptProposal() {
+            document.body.innerHTML = "<h1>Yay! 🎉 Tanisha said YES! ❤️</h1>";
+            startCelebration();
+        }
+
+        function startCelebration() {
+            // Fireworks effect
+            for (let i = 0; i < 30; i++) {
+                let firework = document.createElement("div");
+                firework.className = "firework";
+                firework.style.left = `${Math.random() * 100}vw`;
+                firework.style.top = `${Math.random() * 100}vh`;
+                document.body.appendChild(firework);
+                setTimeout(() => firework.remove(), 600);
+            }
+
+            // Confetti effect
+            for (let i = 0; i < 50; i++) {
+                let confetti = document.createElement("div");
+                confetti.className = "confetti";
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`; // Random colors
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 2000);
+            }
+
+            setInterval(startCelebration, 1000); // Repeat celebration
+        }
+    </script>
+
+</body>
+
+</html>
