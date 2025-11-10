@@ -1551,6 +1551,253 @@ class SecondScreen extends StatelessWidget {
   </script>
     </div>
 
+        <!-- A13 -->
+    <div class="card">
+      <div class="title">Assignment 13: Greeting Card (2 Screens)</div>
+      <div class="assignment-card">
+        <!-- quick visual mockup -->
+        <div style="border:1px solid var(--border); border-radius:12px; overflow:hidden">
+          <div style="background:#7c3aed; color:#fff; padding:10px 14px; font-weight:700">Greeting Card</div>
+          <div style="padding:14px; background:#faf5ff">
+            <div style="font-size:14px; color:#6b21a8; margin-bottom:8px">Enter your name:</div>
+            <div style="border:1px solid #e9d5ff; height:36px; border-radius:6px; background:#fff"></div>
+            <div style="height:40px; margin-top:10px; background:#7c3aed; color:#fff; display:flex; align-items:center; justify-content:center; border-radius:6px">See Your Gift</div>
+          </div>
+          <div style="background:#7c3aed; color:#fff; padding:8px 14px; font-weight:700">Your Gift</div>
+          <div style="padding:14px; background:#ede9fe">
+            <div style="font-size:40px; line-height:1">🎂</div>
+            <div style="margin:6px 0 10px; font-weight:700; color:#5b21b6">Happy Birthday &lt;name&gt;!</div>
+            <div style="height:36px; width:100px; background:#a78bfa; color:#fff; display:flex; align-items:center; justify-content:center; border-radius:6px">Back</div>
+          </div>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('code-a13', this)">Copy Dart</button>
+      </div>
+      <script type="text/plain" id="code-a13">
+        import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart'	
+import 'package:lottie/lottie.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Greeting Card',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        // Apply Lato as the default font family
+        textTheme: GoogleFonts.latoTextTheme(
+          Theme.of(context).textTheme,
+        ),
+      ),
+      home: const HomeScreen(),
+    );
+  }
+}
+
+// --- First Screen ---
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  // Controller to get the text from the text field
+  final TextEditingController _nameController = TextEditingController();
+
+  // State to hold validation error text
+  String? _nameError;
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    _nameController.dispose();
+    super.dispose();
+  }
+
+  void _navigateToGreeting() {
+    // Validate the name
+    if (_nameController.text.trim().isEmpty) {
+      // Show an error message if the name is empty
+      setState(() {
+        _nameError = 'Please enter your name';
+      });
+    } else {
+      // Clear any previous error and navigate
+      setState(() {
+        _nameError = null;
+      });
+
+      // Use Navigator.push() to go to the second screen
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => GreetingScreen(
+            // Pass the entered name to the second screen
+            name: _nameController.text.trim(),
+          ),
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Birthday Greeting'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              "What's your name?",
+              textAlign: TextAlign.center,
+              style: GoogleFonts.lato(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 20),
+            // Text field for entering the name
+            TextField(
+              controller: _nameController,
+              decoration: InputDecoration(
+                labelText: 'Name',
+                hintText: 'Enter your name here',
+                // Show the error text if validation fails
+                errorText: _nameError,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+              ),
+            ),
+            const SizedBox(height: 30),
+            // Button to navigate to the second screen
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+              ),
+              onPressed: _navigateToGreeting,
+              child: const Text(
+                'See Your Gift',
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// --- Second Screen ---
+class GreetingScreen extends StatelessWidget {
+  // Receive the name from the first screen
+  final String name;
+
+  const GreetingScreen({super.key, required this.name});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Your Gift!'),
+        // The back button is added automatically by Navigator.push
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Lottie animation from a local asset
+                Lottie.asset(
+                  'assets/birthday.json',
+                  width: 300,
+                  height: 300,
+                  fit: BoxFit.cover,
+                ),
+                const SizedBox(height: 30),
+                // Display "Happy Birthday [name]"
+                Text(
+                  'Happy Birthday',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.pacifico(
+                    fontSize: 32,
+                    color: Colors.pink,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  name,
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.pacifico(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blueAccent,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+pubspec.yaml
+
+name: flutter_greeting_card
+description: A new Flutter project.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Add these dependencies
+  lottie: ^3.1.2 # For Lottie animations
+  google_fonts: ^6.2.1 # For Google Fonts
+
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+  </script>
+    </div>
 
   </div>
 
