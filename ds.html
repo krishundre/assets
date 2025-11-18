@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Science & ML Assignments</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --primary: #3b82f6;
+      --success: #22c55e;
+
+      /* Category Colors */
+      --cls-bg: #eff6ff;
+      --cls-text: #1d4ed8;
+      --reg-bg: #f0fdf4;
+      --reg-text: #15803d;
+      --rf-bg: #fff7ed;
+      --rf-text: #c2410c;
+      --clu-bg: #faf5ff;
+      --clu-text: #7e22ce;
+      --assoc-bg: #fdf2f8;
+      --assoc-text: #be185d;
+      --mix-bg: #f3f4f6;
+      --mix-text: #374151;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+    }
+
+    header {
+      margin-bottom: 30px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      letter-spacing: -0.5px;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .tag.cls {
+      background: var(--cls-bg);
+      color: var(--cls-text);
+    }
+
+    .tag.reg {
+      background: var(--reg-bg);
+      color: var(--reg-text);
+    }
+
+    .tag.rf {
+      background: var(--rf-bg);
+      color: var(--rf-text);
+    }
+
+    .tag.clu {
+      background: var(--clu-bg);
+      color: var(--clu-text);
+    }
+
+    .tag.assoc {
+      background: var(--assoc-bg);
+      color: var(--assoc-text);
+    }
+
+    .tag.mix {
+      background: var(--mix-bg);
+      color: var(--mix-text);
+    }
+
+    .title {
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .scenario {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 16px;
+      flex-grow: 1;
+      border-left: 3px solid var(--border);
+      padding-left: 12px;
+    }
+
+    /* Mini code preview visual */
+    .code-preview {
+      background: #1e293b;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 16px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 11px;
+      color: #94a3b8;
+      position: relative;
+      overflow: hidden;
+      height: 80px;
+      user-select: none;
+    }
+
+    .code-preview::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50px;
+      background: linear-gradient(to bottom, transparent, #1e293b);
+    }
+
+    .cp-kw {
+      color: #c678dd;
+    }
+
+    /* keyword */
+    .cp-fn {
+      color: #61afef;
+    }
+
+    /* function */
+    .cp-str {
+      color: #98c379;
+    }
+
+    /* string */
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .copy-btn {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: #f1f5f9;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.1s ease;
+    }
+
+    .copy-btn:hover {
+      background: #e2e8f0;
+    }
+
+    .copy-btn:active {
+      transform: scale(0.98);
+    }
+
+    .copy-btn.copied {
+      background: #dcfce7;
+      color: #166534;
+      border-color: #bbf7d0;
+    }
+
+    .req-box {
+      background: #1e293b;
+      color: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      font-family: monospace;
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* hide raw code blocks */
+    script[type="text/plain"] {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>IT32: Data Science & ML Assignments</h1>
+    <p>Comprehensive collection of 25 Python assignments covering Classification, Regression, Clustering, and more.</p>
+
+    <div class="req-box">
+      <span>pip install scikit-learn numpy pandas mlxtend</span>
+      <button class="copy-btn" style="background:#334155; border:none; color:white" onclick="copyText('pip install scikit-learn numpy pandas mlxtend', this)">Copy</button>
+    </div>
+  </header>
+
+  <div class="grid">
+
+    <div class="card">
+      <div><span class="tag cls">Classification</span></div>
+      <div class="title">1. Medical Diagnosis (SVM)</div>
+      <div class="scenario">Diagnose skin cancer (benign/malignant) using image features and Support Vector Machines.</div>
+      <div class="code-preview">
+        <span class="cp-kw">from</span> sklearn <span class="cp-kw">import</span> svm<br>
+        <span class="cp-kw">from</span> sklearn.model_selection <span class="cp-kw">import</span> train_test_split<br>
+        <span class="cp-fn">model</span> = svm.<span class="cp-fn">SVC</span>()<br>
+        model.<span class="cp-fn">fit</span>(X_train, y_train)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c1', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c1">
+        from sklearn import svm
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Manual dataset: features for skin lesions (10 samples, 4 features)
+X = [
+    [1.2, 3.5, 0.9, 2.2],
+    [2.1, 3.9, 1.0, 1.8],
+    [1.8, 3.2, 0.6, 2.0],
+    [2.3, 4.0, 1.2, 1.5],
+    [1.0, 3.1, 0.7, 2.1],
+    [2.2, 3.7, 1.1, 1.6],
+    [1.5, 3.3, 0.8, 2.3],
+    [2.0, 3.8, 1.3, 1.9],
+    [1.4, 3.2, 0.6, 2.4],
+    [2.1, 4.1, 1.0, 1.7]
+]
+y = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1]  # 0=benign, 1=malignant
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+model = svm.SVC()
+model.fit(X_train, y_train)
+predictions = model.predict(X_test)
+print("Predictions:", predictions)
+print("Accuracy:", accuracy_score(y_test, predictions))
+      </script>
+    </div>
+
+    <div class="card">
+      <div><span class="tag cls">Classification</span></div>
+      <div class="title">2. Loan Default (Decision Tree)</div>
+      <div class="scenario">Assess loan applicants for risk of default based on income, credit score, and employment.</div>
+      <div class="code-preview">
+        <span class="cp-kw">from</span> sklearn.tree <span class="cp-kw">import</span> DecisionTreeClassifier<br>
+        <span class="cp-fn">model</span> = <span class="cp-fn">DecisionTreeClassifier</span>()<br>
+        model.<span class="cp-fn">fit</span>(X_train, y_train)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c2', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c2">
+        from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Manual dataset: [income, credit score, employment years] for 10 applicants
+X = [
+    [25000, 650, 2],
+    [55000, 800, 10],
+    [30000, 620, 3],
+    [75000, 720, 7],
+    [12000, 600, 1],
+    [47000, 710, 5],
+    [82000, 780, 12],
+    [27000, 680, 4],
+    [95000, 820, 15],
+    [65000, 700, 8]
+]
+y = [1, 0, 1, 0, 1, 0, 0, 1, 0, 0]  # 1=default, 0=not default
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+model = DecisionTreeClassifier()
+model.fit(X_train, y_train)
+predictions = model.predict(X_test)
+print("Predictions:", predictions)
+print("Accuracy:", accuracy_score(y_test, predictions))
+      </script>
+    </div>
+
+    <div class="card">
+      <div><span class="tag cls">Classification</span></div>
+      <div class="title">3. Disease Classify (KNN)</div>
+      <div class="scenario">Predict diabetes in patients using glucose, BMI, and age metrics with K-Nearest Neighbors.</div>
+      <div class="code-preview">
+        <span class="cp-kw">from</span> sklearn.neighbors <span class="cp-kw">import</span> KNeighborsClassifier<br>
+        <span class="cp-fn">model</span> = <span class="cp-fn">KNeighborsClassifier</span>(n_neighbors=3)<br>
+        model.<span class="cp-fn">fit</span>(X_train, y_train)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c3', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c3">
+        from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Manual dataset: [glucose, BMI, age] for 10 patients
+X = [
+    [130, 28.1, 45],
+    [181, 37.5, 59],
+    [100, 22.3, 29],
+    [145, 26.9, 38],
+    [120, 24.2, 32],
+    [175, 36.1, 61],
+    [110, 21.4, 26],
+    [140, 29.5, 47],
+    [165, 33.8, 53],
+    [115, 25.6, 35]
+]
+y = [1, 1, 0, 1, 0, 1, 0, 1, 1, 0]  # 1=diabetes, 0=no diabetes
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+model = KNeighborsClassifier(n_neighbors=3)
+model.fit(X_train, y_train)
+predictions = model.predict(X_test)
+print("Predictions:", predictions)
+print("Accuracy:", accuracy_score(y_test, predictions))
+      </script>
+    </div>
+
+    <div class="card">
+      <div><span class="tag cls">Classification</span></div>
+      <div class="title">4. Spam Detection (Naive Bayes)</div>
+      <div class="scenario">Filter email spam based on word frequency counts and metadata using MultinomialNB.</div>
+      <div class="code-preview">
+        <span class="cp-kw">from</span> sklearn.naive_bayes <span class="cp-kw">import</span> MultinomialNB<br>
+        <span class="cp-fn">model</span> = <span class="cp-fn">MultinomialNB</span>()<br>
+        model.<span class="cp-fn">fit</span>(X_train, y_train)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c4', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c4">
+        from sklearn.naive_bayes import MultinomialNB
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+import numpy as np
+
+# Manual dataset: 10 emails represented with word frequency counts (6 features)
+X = np.array([
+    [0, 2, 1, 0, 3, 0],
+    [1, 0, 3, 1, 0, 2],
+    [0, 1, 2, 0, 1, 0],
+    [3, 0, 1, 0, 2, 1],
+    [2, 1, 0, 3, 0, 0],
+    [1, 3, 0, 2, 1, 1],
+    [0, 2, 2, 1, 0, 3],
+    [3, 0, 1, 0, 2, 1],
+    [2, 2, 0, 3, 1, 0],
+    [1, 1, 3, 0, 2, 2]
+])
+y = [1, 0, 0, 1, 0, 1, 0, 1, 0, 1]  # 1=spam, 0=not spam
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+model = MultinomialNB()
+model.fit(X_train, y_train)
+predictions = model.predict(X_test)
+print("Predictions:", predictions)
+print("Accuracy:", accuracy_score(y_test, predictions))
+      </script>
+    </div>
+
+    <div class="card">
+      <div><span class="tag cls">Classification</span></div>
+      <div class="title">5. Sentiment Analysis (SVM)</div>
+      <div class="scenario">Classify customer reviews as positive or negative using TF-IDF Vectorizer and SVM.</div>
+      <div class="code-preview">
+        <span class="cp-kw">from</span> sklearn.feature_extraction.text <span class="cp-kw">import</span> TfidfVectorizer<br>
+        <span class="cp-fn">vectorizer</span> = <span class="cp-fn">TfidfVectorizer</span>()<br>
+        X = vectorizer.<span class="cp-fn">fit_transform</span>(texts)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c5', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c5">
+        from sklearn import svm
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Manual dataset: 10 customer reviews with labels (1=positive, 0=negative)
+texts = [
+    "good product",
+    "bad quality",
+    "excellent service",
+    "terrible staff",
+    "happy customer",
+    "worst experience",
+    "amazing deal",
+    "not recommended",
+    "fantastic value",
+    "disappointed"
+]
+y = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
+
+vectorizer = TfidfVectorizer()
+X = vectorizer.fit_transform(texts).toarray()
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+model = svm.SVC()
+model.fit(X_train, y_train)
+predictions = model.predict(X_test)
+print("Predictions:", predictions)
+print("Accuracy:", accuracy_score(y_test, predictions))
+      </script>
+    </div>
+
+    <div class="card">
+      <div><span class="tag reg">Regression</span></div>
+      <div class="title">6. House Prices (Linear Reg)</div>
+      <div class="scenario">Estimate property prices based on location score, size (sqft), and amenities score.</div>
+      <div class="code-preview">
+        <span class="cp-kw">from</span> sklearn.linear_model <span class="cp-kw">import</span> LinearRegression<br>
+        <span class="cp-fn">model</span> = <span class="cp-fn">LinearRegression</span>()<br>
+        model.<span class="cp-fn">fit</span>(X_train, y_train)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c6', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c6">
+        from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
+
+# Manual dataset: [location_score, size_sqft, amenities_score] and price in 1000s INR
+X = [
+    [7, 1500, 8],
+    [9, 1800, 7],
+    [6, 1400, 6],
+    [8, 1600, 9],
+    [5, 1300, 5],
+    [9, 2000, 8],
+    [4, 1200, 4],
+    [7, 1550, 7],
+    [8, 1700, 7],
+    [6, 1450, 6]
+]
+y = [75, 90, 65, 80, 55, 95, 50, 78, 85, 70]
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+model = LinearRegression()
+model.fit(X_train, y_train)
+predictions = model.predict(X_test)
+print("Predicted prices:", predictions)
+print("Actual prices:   ", y_test)
+print("MSE:", mean_squared_error(y_test, predictions))
+      </script>
+    </div>
+
+    <div class="card">
+      <div><span class="tag reg">Regression</span></div>
+      <div class="title">7. Churn Prediction (Logistic)</div>
+      <div class="scenario">Model customer churn likelihood for a telecom company using usage and billing data.</div>
+      <div class="code-preview">
+        <span class="cp-kw">from</span> sklearn.linear_model <span class="cp-kw">import</span> LogisticRegression<br>
+        <span class="cp-fn">model</span> = <span class="cp-fn">LogisticRegression</span>()<br>
+        churn_prob = model.<span class="cp-fn">predict_proba</span>(X_test)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c7', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c7">
+        from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Manual dataset: [monthly_usage_hours, total_bill, customer_service_calls]
+X = [
+    [120, 3000, 2],
+    [140, 3500, 0],
+    [100, 2800, 3],
+    [180, 4500, 1],
+    [90, 2500, 4],
+    [200, 5000, 0],
+    [110, 2700, 2],
+    [130, 3300, 1],
+    [150, 4000, 1],
+    [95, 2600, 5]
+]
+y = [0, 0, 1, 0, 1, 0, 1, 0, 0, 1]  # 1=churn, 0=no churn
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+model = LogisticRegression()
+model.fit(X_train, y_train)
+churn_prob = model.predict_proba(X_test)[:, 1]
+predictions = model.predict(X_test)
+print("Churn probabilities:", churn_prob)
+print("Predicted churn:", predictions)
+print("Actual churn:   ", y_test)
+print("Accuracy:", accuracy_score(y_test, predictions))
+      </script>
+    </div>
+
+    <div class="card">
+      <div><span class="tag reg">Regression</span></div>
+      <div class="title">8. Stock Forecast (Least Squares)</div>
+      <div class="scenario">Manual implementation of Least Squares to predict future stock trends from historical data.</div>
+      <div class="code-preview">
+        <span class="cp-kw">import</span> numpy <span class="cp-kw">as</span> np<br>
+        <span class="cp-str"># Calculate theta using Normal Equation</span><br>
+        theta = np.linalg.<span class="cp-fn">inv</span>(X.T.<span class="cp-fn">dot</span>(X)).<span class="cp-fn">dot</span>(X.T).<span class="cp-fn">dot</span>(y)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c8', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c8">
+        import numpy as np
+
+# Historical stock prices (days vs price)
+X = np.array([[1], [2], [3], [4], [5], [6], [7], [8], [9], [10]])
+y = np.array([100, 102, 104, 108, 110, 112, 115, 117, 119, 120])
+
+# Add bias term
+X_b = np.c_[np.ones((X.shape[0], 1)), X]
+
+# Calculate coefficients using least squares
+theta_best = np.linalg.inv(X_b.T.dot(X_b)).dot(X_b.T).dot(y)
+
+# Predict future stock prices for days 11 and 12
+X_new = np.array([[1, 11], [1, 12]])
+predictions = X_new.dot(theta_best)
+print("Predicted stock prices for days 11 and 12:", predictions)
+      </script>
+    </div>
+
+    <div class="card">
+      <div><span class="tag reg">Regression</span></div>
+      <div class="title">9. Crop Yield (Linear Reg)</div>
+      <div class="scenario">Predict agricultural yield based on rainfall, temperature, and soil quality.</div>
+      <div class="code-preview">
+        <span class="cp-kw">from</span> sklearn.linear_model <span class="cp-kw">import</span> LinearRegression<br>
+        <span class="cp-fn">model</span> = <span class="cp-fn">LinearRegression</span>()<br>
+        model.<span class="cp-fn">fit</span>(X_train, y_train)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c9', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c9">
+        from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
+
+# Features: [rainfall_mm, temperature_celsius, soil_quality_score]
+X = [
+    [100, 25, 7],
+    [150, 27, 8],
+    [90, 24, 6],
+    [110, 26, 7],
+    [130, 28, 7],
+    [105, 25, 6],
+    [160, 29, 8],
+    [120, 26, 6]
+]
+y = [3.5, 4.2, 3.0, 3.6, 3.9, 3.4, 4.5, 3.7]  # Crop yield in tons per hectare
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+model = LinearRegression()
+model.fit(X_train, y_train)
+predictions = model.predict(X_test)
+print("Predicted crop yields:", predictions)
+print("Actual crop yields:   ", y_test)
+print("MSE:", mean_squared_error(y_test, predictions))
+      </script>
+    </div>
+
+    <div class="card">
+      <div><span class="tag reg">Regression</span></div>
+      <div class="title">10. Heart Disease Risk (Logistic)</div>
+      <div class="scenario">Assess high/low risk of heart disease based on age, cholesterol, and blood pressure.</div>
+      <div class="code-preview">
+        <span class="cp-kw">from</span> sklearn.linear_model <span class="cp-kw">import</span> LogisticRegression<br>
+        <span class="cp-fn">model</span> = <span class="cp-fn">LogisticRegression</span>()<br>
+        predictions = model.<span class="cp-fn">predict</span>(X_test)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c10', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c10">
+        from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Features: [age, cholesterol, blood_pressure]
+X = [
+    [55, 220, 130],
+    [60, 240, 140],
+    [45, 180, 120],
+    [50, 200, 125],
+    [65, 260, 150],
+    [40, 190, 115],
+    [70, 270, 160],
+    [52, 210, 135]
+]
+y = [1, 1, 0, 0, 1, 0, 1, 0]  # 1 = high risk, 0 = low risk
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+model = LogisticRegression()
+model.fit(X_train, y_train)
+predictions = model.predict(X_test)
+print("Predicted risk:", predictions)
+print("Actual risk:   ", y_test)
+print("Accuracy:", accuracy_score(y_test, predictions))
+      </script>
+    </div>
+
+    <div class="card">
+      <div><span class="tag rf">Random Forest</span></div>
+      <div class="title">11. Fraud Detection (Random Forest)</div>
+      <div class="scenario">Identify fraudulent financial transactions based on amount, time, and location.</div>
+      <div class="code-preview">
+        <span class="cp-kw">from</span> sklearn.ensemble <span class="cp-kw">import</span> RandomForestClassifier<br>
+        <span class="cp-fn">model</span> = <span class="cp-fn">RandomForestClassifier</span>()<br>
+        model.<span class="cp-fn">fit</span>(X_train, y_train)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c11', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c11">
+        from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Features: [transaction_amount, transaction_time, location_score]
+X = [
+    [100, 13, 5],
+    [2000, 4, 1],
+    [150, 9, 4],
+    [3000, 16, 2],
+    [120, 12, 5],
+    [5000, 3, 1],
+    [110, 10, 4],
+    [4000, 15, 2]
+]
+y = [0, 1, 0, 1, 0, 1, 0, 1]  # 1=fraud, 0=legit
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+model = RandomForestClassifier()
+model.fit(X_train, y_train)
+predictions = model.predict(X_test)
+print("Predicted fraud:", predictions)
+print("Actual fraud:   ", y_test)
+print("Accuracy:", accuracy_score(y_test, predictions))
+      </script>
+    </div>
+
+    <div class="card">
+      <div><span class="tag rf">Random Forest</span></div>
+      <div class="title">12. Employee Attrition (RF)</div>
+      <div class="scenario">Predict HR turnover using job satisfaction, tenure, and performance data.</div>
+      <div class="code-preview">
+        <span class="cp-kw">from</span> sklearn.ensemble <span class="cp-kw">import</span> RandomForestClassifier<br>
+        <span class="cp-fn">model</span> = <span class="cp-fn">RandomForestClassifier</span>()<br>
+        model.<span class="cp-fn">fit</span>(X_train, y_train)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c12', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c12">
+        from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Features: [job_satisfaction(1-5), years_at_company, performance_rating(1-5)]
+X = [
+    [4, 3, 5],
+    [2, 1, 2],
+    [5, 6, 4],
+    [3, 4, 3],
+    [1, 2, 1],
+    [5, 7, 5],
+    [2, 1, 2],
+    [4, 5, 4]
+]
+y = [0, 1, 0, 0, 1, 0, 1, 0]  # 1=attrition, 0=stay
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+model = RandomForestClassifier()
+model.fit(X_train, y_train)
+predictions = model.predict(X_test)
+print("Predicted attrition:", predictions)
+print("Actual attrition:   ", y_test)
+print("Accuracy:", accuracy_score(y_test, predictions))
+      </script>
+    </div>
+
+    <div class="card">
+      <div><span class="tag rf">Random Forest</span></div>
+      <div class="title">13. Air Quality (RF)</div>
+      <div class="scenario">Classify AQI levels (Good, Moderate, Unhealthy) based on pollutant sensor data.</div>
+      <div class="code-preview">
+        <span class="cp-kw">from</span> sklearn.ensemble <span class="cp-kw">import</span> RandomForestClassifier<br>
+        <span class="cp-fn">model</span> = <span class="cp-fn">RandomForestClassifier</span>()<br>
+        predictions = model.<span class="cp-fn">predict</span>(X_test)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c13', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c13">
+        from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Features: [PM2.5, PM10, NO2, SO2]
+X = [
+    [35, 50, 20, 10],
+    [80, 100, 50, 40],
+    [20, 30, 10, 5],
+    [60, 80, 35, 25],
+    [15, 25, 5, 2],
+    [90, 110, 60, 50],
+    [25, 35, 15, 8],
+    [70, 90, 40, 30]
+]
+y = [0, 2, 0, 1, 0, 2, 0, 1]  # 0=Good, 1=Moderate, 2=Unhealthy
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+model = RandomForestClassifier()
+model.fit(X_train, y_train)
+predictions = model.predict(X_test)
+print("Predicted AQI Levels:", predictions)
+print("Actual AQI Levels:   ", y_test)
+print("Accuracy:", accuracy_score(y_test, predictions))
+      </script>
+    </div>
+
+    <div class="card">
+      <div><span class="tag rf">Random Forest</span></div>
+      <div class="title">14. Product Recs (RF)</div>
+      <div class="scenario">Predict user interest in products based on browsing history and time spent.</div>
+      <div class="code-preview">
+        <span class="cp-kw">from</span> sklearn.ensemble <span class="cp-kw">import</span> RandomForestClassifier<br>
+        <span class="cp-fn">model</span> = <span class="cp-fn">RandomForestClassifier</span>()<br>
+        model.<span class="cp-fn">fit</span>(X_train, y_train)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c14', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c14">
+        from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Features: [pages_viewed, time_spent_minutes, previous_purchases]
+X = [
+    [5, 15, 1],
+    [20, 60, 5],
+    [8, 20, 2],
+    [25, 70, 6],
+    [4, 10, 1],
+    [30, 80, 7],
+    [6, 18, 2],
+    [22, 65, 5]
+]
+y = [0, 1, 0, 1, 0, 1, 0, 1]  # 1=interested, 0=not interested
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+model = RandomForestClassifier()
+model.fit(X_train, y_train)
+predictions = model.predict(X_test)
+print("Predicted interest:", predictions)
+print("Actual interest:   ", y_test)
+print("Accuracy:", accuracy_score(y_test, predictions))
+      </script>
+    </div>
+
+    <div class="card">
+      <div><span class="tag clu">Clustering</span></div>
+      <div class="title">15. Segmentation (K-Means)</div>
+      <div class="scenario">Segment customers for marketing by spending behavior, age, and income.</div>
+      <div class="code-preview">
+        <span class="cp-kw">from</span> sklearn.cluster <span class="cp-kw">import</span> KMeans<br>
+        <span class="cp-fn">model</span> = <span class="cp-fn">KMeans</span>(n_clusters=3)<br>
+        segments = model.<span class="cp-fn">fit_predict</span>(X)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c15', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c15">
+        from sklearn.cluster import KMeans
+import numpy as np
+
+# Features: [annual_spending, age, income]
+X = np.array([
+    [40000, 25, 50000],
+    [50000, 40, 60000],
+    [30000, 22, 40000],
+    [55000, 35, 65000],
+    [35000, 30, 45000],
+    [52000, 38, 63000]
+])
+
+model = KMeans(n_clusters=3, random_state=42)
+segments = model.fit_predict(X)
+
+print("Customer segments:", segments)
+print("Cluster centers:", model.cluster_centers_)
+      </script>
+    </div>
+
+    <div class="card">
+      <div><span class="tag clu">Clustering</span></div>
+      <div class="title">16. Doc Clustering (K-Means)</div>
+      <div class="scenario">Organize news articles into topics (Sports, Politics, Tech) using TF-IDF and K-Means.</div>
+      <div class="code-preview">
+        <span class="cp-kw">from</span> sklearn.cluster <span class="cp-kw">import</span> KMeans<br>
+        <span class="cp-fn">model</span> = <span class="cp-fn">KMeans</span>(n_clusters=3)<br>
+        clusters = model.<span class="cp-fn">fit_predict</span>(X)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c16', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c16">
+        from sklearn.cluster import KMeans
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+texts = [
+    "sports football match",
+    "politics election campaign",
+    "sports basketball game",
+    "politics government policy",
+    "technology new smartphone release",
+    "technology software update"
+]
+
+vectorizer = TfidfVectorizer()
+X = vectorizer.fit_transform(texts)
+
+model = KMeans(n_clusters=3, random_state=42)
+clusters = model.fit_predict(X)
+
+print("Document clusters:", clusters)
+for i, text in enumerate(texts):
+    print(f"'{text}' -> Cluster {clusters[i]}")
+      </script>
+    </div>
+
+    <div class="card">
+      <div><span class="tag clu">Clustering</span></div>
+      <div class="title">17. Image Compression (KMeans)</div>
+      <div class="scenario">Compress images by reducing the number of colors using K-Means on RGB pixels.</div>
+      <div class="code-preview">
+        <span class="cp-kw">from</span> sklearn.cluster <span class="cp-kw">import</span> KMeans<br>
+        <span class="cp-fn">model</span> = <span class="cp-fn">KMeans</span>(n_clusters=3)<br>
+        compressed = model.<span class="cp-fn">fit_predict</span>(pixels)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c17', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c17">
+        from sklearn.cluster import KMeans
+import numpy as np
+
+# Example: image pixels (10 pixels with RGB)
+image_pixels = np.array([
+    [123, 234, 213],
+    [130, 240, 210],
+    [125, 230, 220],
+    [200, 100, 70],
+    [205, 110, 75],
+    [210, 105, 80],
+    [50, 50, 100],
+    [55, 45, 95],
+    [60, 50, 90],
+    [53, 48, 98]
+])
+
+model = KMeans(n_clusters=3, random_state=42)
+compressed_labels = model.fit_predict(image_pixels)
+compressed_colors = model.cluster_centers_.astype(int)
+
+print("Compressed pixel labels:", compressed_labels)
+print("Cluster colors (RGB):", compressed_colors)
+      </script>
+    </div>
+
+    <div class="card">
+      <div><span class="tag clu">Clustering</span></div>
+      <div class="title">18. Traffic Analysis (K-Means)</div>
+      <div class="scenario">Optimize city traffic by clustering GPS data to identify congestion zones.</div>
+      <div class="code-preview">
+        <span class="cp-kw">from</span> sklearn.cluster <span class="cp-kw">import</span> KMeans<br>
+        <span class="cp-fn">model</span> = <span class="cp-fn">KMeans</span>(n_clusters=2)<br>
+        patterns = model.<span class="cp-fn">fit_predict</span>(X)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c18', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c18">
+        from sklearn.cluster import KMeans
+import numpy as np
+
+# GPS coordinates and speed: [latitude, longitude, speed_kmph]
+X = np.array([
+    [19.07, 72.87, 30],
+    [19.06, 72.88, 25],
+    [19.08, 72.85, 12],
+    [19.15, 73.00, 40],
+    [19.14, 73.01, 35],
+    [19.16, 72.99, 45]
+])
+
+model = KMeans(n_clusters=2, random_state=42)
+patterns = model.fit_predict(X)
+
+print("Traffic clusters:", patterns)
+print("Cluster centers:", model.cluster_centers_)
+      </script>
+    </div>
+
+    <div class="card">
+      <div><span class="tag assoc">Assoc Rules</span></div>
+      <div class="title">19. Market Basket (Apriori)</div>
+      <div class="scenario">Find frequent itemsets in supermarket transactions using the Apriori algorithm.</div>
+      <div class="code-preview">
+        <span class="cp-kw">from</span> mlxtend.frequent_patterns <span class="cp-kw">import</span> apriori<br>
+        freq = <span class="cp-fn">apriori</span>(data, min_support=0.6)<br>
+        rules = <span class="cp-fn">association_rules</span>(freq)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c19', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c19">
+        import pandas as pd
+from mlxtend.frequent_patterns import apriori, association_rules
+
+# Transaction data (manual)
+data = pd.DataFrame([
+    {'bread':1, 'milk':1, 'butter':0, 'cheese':0},
+    {'bread':1, 'milk':1, 'butter':1, 'cheese':0},
+    {'bread':1, 'milk':0, 'butter':1, 'cheese':1},
+    {'bread':0, 'milk':1, 'butter':1, 'cheese':0},
+    {'bread':1, 'milk':1, 'butter':1, 'cheese':1}
+])
+
+frequent_itemsets = apriori(data, min_support=0.6, use_colnames=True)
+rules = association_rules(frequent_itemsets, metric="lift", min_threshold=1)
+
+print("Frequent Itemsets:")
+print(frequent_itemsets)
+print("\nAssociation Rules:")
+print(rules[['antecedents', 'consequents', 'support', 'confidence', 'lift']])
+      </script>
+    </div>
+
+    <div class="card">
+      <div><span class="tag assoc">Assoc Rules</span></div>
+      <div class="title">20. Web Navigation (Apriori)</div>
+      <div class="scenario">Discover common user navigation paths on a website to improve UX.</div>
+      <div class="code-preview">
+        <span class="cp-kw">from</span> mlxtend.frequent_patterns <span class="cp-kw">import</span> apriori<br>
+        freq = <span class="cp-fn">apriori</span>(data, min_support=0.4)<br>
+        rules = <span class="cp-fn">association_rules</span>(freq)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c20', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c20">
+        import pandas as pd
+from mlxtend.frequent_patterns import apriori, association_rules
+
+data = pd.DataFrame([
+    {'home':1, 'about':1, 'product':0, 'contact':0},
+    {'home':1, 'about':0, 'product':1, 'contact':1},
+    {'home':1, 'about':1, 'product':1, 'contact':0},
+    {'home':0, 'about':1, 'product':1, 'contact':1},
+    {'home':1, 'about':0, 'product':1, 'contact':1}
+])
+
+freq = apriori(data, min_support=0.4, use_colnames=True)
+rules = association_rules(freq, metric="confidence", min_threshold=0.6)
+
+print("Navigation patterns:")
+print(rules[['antecedents', 'consequents', 'confidence', 'lift']])
+      </script>
+    </div>
+
+    <div class="card">
+      <div><span class="tag assoc">Assoc Rules</span></div>
+      <div class="title">21. Drug Patterns (Apriori)</div>
+      <div class="scenario">Analyze co-prescribed drugs in a hospital to find frequent medical combinations.</div>
+      <div class="code-preview">
+        <span class="cp-kw">from</span> mlxtend.frequent_patterns <span class="cp-kw">import</span> apriori<br>
+        freq = <span class="cp-fn">apriori</span>(data, min_support=0.3)<br>
+        rules = <span class="cp-fn">association_rules</span>(freq)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c21', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c21">
+        import pandas as pd
+from mlxtend.frequent_patterns import apriori, association_rules
+
+data = pd.DataFrame([
+    {'drugA':1, 'drugB':0, 'drugC':1},
+    {'drugA':1, 'drugB':1, 'drugC':0},
+    {'drugA':0, 'drugB':1, 'drugC':1},
+    {'drugA':1, 'drugB':1, 'drugC':1},
+    {'drugA':0, 'drugB':0, 'drugC':1}
+])
+
+freq = apriori(data, min_support=0.3, use_colnames=True)
+rules = association_rules(freq, metric="lift", min_threshold=1)
+
+print("Drug prescription patterns:")
+print(rules[['antecedents', 'consequents', 'support', 'confidence']])
+      </script>
+    </div>
+
+    <div class="card">
+      <div><span class="tag assoc">Assoc Rules</span></div>
+      <div class="title">22. Course Recs (Apriori)</div>
+      <div class="scenario">Recommend online courses by mining enrollment data for course associations.</div>
+      <div class="code-preview">
+        <span class="cp-kw">from</span> mlxtend.frequent_patterns <span class="cp-kw">import</span> apriori<br>
+        freq = <span class="cp-fn">apriori</span>(data, min_support=0.4)<br>
+        rules = <span class="cp-fn">association_rules</span>(freq)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c22', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c22">
+        import pandas as pd
+from mlxtend.frequent_patterns import apriori, association_rules
+
+data = pd.DataFrame([
+    {'courseA':1, 'courseB':0, 'courseC':1},
+    {'courseA':1, 'courseB':1, 'courseC':0},
+    {'courseA':0, 'courseB':1, 'courseC':1},
+    {'courseA':1, 'courseB':1, 'courseC':1},
+    {'courseA':0, 'courseB':0, 'courseC':1}
+])
+
+freq = apriori(data, min_support=0.4, use_colnames=True)
+rules = association_rules(freq, metric="lift", min_threshold=1)
+
+print("Course recommendation patterns:")
+print(rules[['antecedents', 'consequents', 'confidence', 'lift']])
+      </script>
+    </div>
+
+    <div class="card">
+      <div><span class="tag assoc">Assoc Rules</span></div>
+      <div class="title">23. Loss Prevention (Apriori)</div>
+      <div class="scenario">Identify unusual item combinations linked to theft or retail loss.</div>
+      <div class="code-preview">
+        <span class="cp-kw">from</span> mlxtend.frequent_patterns <span class="cp-kw">import</span> apriori<br>
+        freq = <span class="cp-fn">apriori</span>(data, min_support=0.2)<br>
+        rules = <span class="cp-fn">association_rules</span>(freq)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c23', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c23">
+        import pandas as pd
+from mlxtend.frequent_patterns import apriori, association_rules
+
+data = pd.DataFrame([
+    {'itemA':1, 'itemB':0, 'itemC':1},
+    {'itemA':1, 'itemB':1, 'itemC':0},
+    {'itemA':0, 'itemB':1, 'itemC':1},
+    {'itemA':1, 'itemB':1, 'itemC':1},
+    {'itemA':0, 'itemB':0, 'itemC':1}
+])
+
+freq = apriori(data, min_support=0.2, use_colnames=True)
+rules = association_rules(freq, metric="lift", min_threshold=1)
+
+print("Suspicious buying patterns:")
+print(rules[['antecedents', 'consequents', 'lift', 'confidence']])
+      </script>
+    </div>
+
+    <div class="card">
+      <div><span class="tag mix">Classification + Regression</span></div>
+      <div class="title">24. Predictive Maint. (Mixed)</div>
+      <div class="scenario">Use classification for failure type and regression for time-to-failure prediction.</div>
+      <div class="code-preview">
+        <span class="cp-kw">from</span> sklearn.ensemble <span class="cp-kw">import</span> RFClassifier, RFRegressor<br>
+        clf = <span class="cp-fn">RFClassifier</span>().<span class="cp-fn">fit</span>(Xc, yc)<br>
+        reg = <span class="cp-fn">RFRegressor</span>().<span class="cp-fn">fit</span>(Xr, yr)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c24', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c24">
+        from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from sklearn.model_selection import train_test_split
+import numpy as np
+
+# Classification data: sensor readings (3 features)
+X_cls = np.array([
+    [0.5, 0.7, 0.3],
+    [0.6, 0.9, 0.4],
+    [0.1, 0.2, 0.1],
+    [0.3, 0.5, 0.2],
+    [0.7, 0.8, 0.5]
+])
+y_cls = np.array([1, 1, 0, 0, 1])  # failure types: 1=typeA, 0=typeB
+
+# Regression data: same features predicting time to failure (hours)
+y_reg = np.array([10, 8, 20, 18, 7])
+
+X_train_c, X_test_c, y_train_c, y_test_c = train_test_split(
+    X_cls, y_cls, test_size=0.3, random_state=42)
+X_train_r, X_test_r, y_train_r, y_test_r = train_test_split(
+    X_cls, y_reg, test_size=0.3, random_state=42)
+
+# Classification model
+clf = RandomForestClassifier()
+clf.fit(X_train_c, y_train_c)
+
+# Regression model
+reg = RandomForestRegressor()
+reg.fit(X_train_r, y_train_r)
+
+failure_pred = clf.predict(X_test_c)
+time_pred = reg.predict(X_test_r)
+
+print("Predicted failure type:", failure_pred)
+print("Predicted time to failure (hours):", time_pred)
+      </script>
+    </div>
+
+    <div class="card">
+      <div><span class="tag mix">Clustering + Assoc Rules</span></div>
+      <div class="title">25. Personalization (Mixed)</div>
+      <div class="scenario">Cluster patients by symptoms and mine treatment patterns using association rules.</div>
+      <div class="code-preview">
+        <span class="cp-kw">from</span> sklearn.cluster <span class="cp-kw">import</span> KMeans<br>
+        <span class="cp-kw">from</span> mlxtend.frequent_patterns <span class="cp-kw">import</span> apriori<br>
+        cluster_model.<span class="cp-fn">fit_predict</span>(X)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('c25', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="c25">
+        from sklearn.cluster import KMeans
+import pandas as pd
+from mlxtend.frequent_patterns import apriori, association_rules
+import numpy as np
+
+# Clustering on symptoms (3 features: fever, cough, fatigue)
+X = np.array([
+    [1, 0, 1],
+    [0, 1, 1],
+    [1, 0, 0],
+    [0, 1, 0],
+    [1, 1, 1]
+])
+cluster_model = KMeans(n_clusters=2, random_state=42)
+clusters = cluster_model.fit_predict(X)
+print("Patient clusters based on symptoms:", clusters)
+
+# Treatment pattern mining data
+data = pd.DataFrame([
+    {'treatmentA':1, 'treatmentB':0, 'treatmentC':1},
+    {'treatmentA':1, 'treatmentB':1, 'treatmentC':0},
+    {'treatmentA':0, 'treatmentB':1, 'treatmentC':1},
+    {'treatmentA':1, 'treatmentB':1, 'treatmentC':1},
+    {'treatmentA':0, 'treatmentB':0, 'treatmentC':1}
+])
+
+freq = apriori(data, min_support=0.3, use_colnames=True)
+rules = association_rules(freq, metric="lift", min_threshold=1)
+print("\nAssociation rules for treatments:")
+print(rules[['antecedents', 'consequents', 'confidence', 'lift']])
+      </script>
+    </div>
+
+  </div>
+
+  <script>
+    async function copyCode(codeId, btn) {
+      const el = document.getElementById(codeId);
+      const text = el ? el.textContent.trim() : '';
+      copyText(text, btn);
+    }
+
+    async function copyText(text, btn) {
+      try {
+        await navigator.clipboard.writeText(text);
+        const original = btn.textContent;
+        btn.classList.add('copied');
+        btn.textContent = 'Copied!';
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.textContent = original;
+        }, 1200);
+      } catch (e) {
+        // Fallback
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+
+        const original = btn.textContent;
+        btn.classList.add('copied');
+        btn.textContent = 'Copied!';
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.textContent = original;
+        }, 1200);
+      }
+    }
+  </script>
+</body>
+
+</html>
