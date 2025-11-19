@@ -1,0 +1,2760 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Selenium Scripts Collection — All</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --primary: #3b82f6;
+      --success: #22c55e;
+      --tag-bg: #eef2ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+    }
+    header { margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+    h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: -0.5px; }
+    p { margin: 0; color: var(--muted); line-height: 1.5; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; margin-top: 18px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 12px 20px -6px rgba(0,0,0,0.12); }
+    .tag {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      color: var(--cls-text, #0f172a);
+      background: var(--tag-bg);
+      letter-spacing: .5px;
+    }
+    .title { font-weight: 700; font-size: 15px; margin-bottom: 8px; line-height: 1.3; }
+    .scenario { font-size: 13px; color: var(--muted); margin-bottom: 12px; flex-grow: 1; }
+    .code-preview {
+      background: #0f1724;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 12px;
+      color: #94a3b8;
+      position: relative;
+      overflow: auto;
+      max-height: 140px;
+      white-space: pre;
+    }
+    .actions { display: flex; justify-content: flex-end; gap: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
+    .copy-btn {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: #f1f5f9;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.12s ease;
+    }
+    .copy-btn.copied { background: #dcfce7; color: #166534; border-color: #bbf7d0; }
+    script[type="text/plain"] { display: none; }
+    footer { margin-top: 24px; color: var(--muted); font-size: 13px; }
+  </style>
+</head>
+
+<body>
+  <div class="grid">
+
+    <!-- action.py -->
+    <div class="card">
+      <div><span class="tag">Actions</span></div>
+      <div class="title">action.py</div>
+      <div class="scenario">Hover over Program menu on IMCC site using ActionChains.</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+import time
+
+driver = webdriver.Chrome()
+driver.get("https://imcc.mespune.in/")
+
+program_menu = driver.find_element(By.XPATH,"//li[@id='menu-item-4383']")
+
+actions = ActionChains(driver)
+actions.move_to_element(program_menu).perform()
+
+time.sleep(5)
+
+# What's it doing:
+# Browser opens IMCC site.
+# Finds the Program menu item (id="menu-item-4383").
+# Performs hover using move_to_element().
+# Keeps it open for 5 sec so you can see the dropdown.
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('action_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="action_py">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+import time
+
+driver = webdriver.Chrome()
+driver.get("https://imcc.mespune.in/")
+
+program_menu = driver.find_element(By.XPATH,"//li[@id='menu-item-4383']")
+
+actions = ActionChains(driver)
+actions.move_to_element(program_menu).perform()
+
+time.sleep(5)
+      </script>
+    </div>
+
+    <!-- action1.py -->
+    <div class="card">
+      <div><span class="tag">Actions</span></div>
+      <div class="title">action1.py</div>
+      <div class="scenario">Drag the 3rd recruiter logo 100px left on IMCC site.</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+
+driver = webdriver.Chrome()
+driver.set_page_load_timeout(20)
+driver.maximize_window()
+
+driver.get("https://imcc.mespune.in/")
+wait = WebDriverWait(driver, 15)
+actions = ActionChains(driver)
+
+header = wait.until(
+    EC.presence_of_element_located((By.XPATH,"//h2[contains(normalize-space(.),'Prominent Recruiters')]"))
+)
+logos = wait.until(
+    EC.presence_of_all_elements_located((By.XPATH,"//h2[contains(normalize-space(.),'Prominent Recruiters')]/following::img"))
+)
+print("Total logos found: ", len(logos))
+
+if len(logos)>=3:
+    third_logo = wait.until(EC.visibility_of(logos[2])) #index 2 => 3rd logo
+    time.sleep(2)
+    actions.click_and_hold(third_logo).move_by_offset(-100,0).release().perform()
+    #alternatively:actions.drag_and_drop_by_offset(thrid_logo,-100,0).perform()
+
+    print("Dragged 3rd logo 100px to the left.")
+    time.sleep(2)
+else:
+    print("Less than 3 logos found")
+driver.quit()
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('action1_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="action1_py">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+
+driver = webdriver.Chrome()
+driver.set_page_load_timeout(20)
+driver.maximize_window()
+
+driver.get("https://imcc.mespune.in/")
+wait = WebDriverWait(driver, 15)
+actions = ActionChains(driver)
+
+header = wait.until(
+    EC.presence_of_element_located((By.XPATH,"//h2[contains(normalize-space(.),'Prominent Recruiters')]"))
+)
+logos = wait.until(
+    EC.presence_of_all_elements_located((By.XPATH,"//h2[contains(normalize-space(.),'Prominent Recruiters')]/following::img"))
+)
+print("Total logos found: ", len(logos))
+
+if len(logos)>=3:
+    third_logo = wait.until(EC.visibility_of(logos[2])) #index 2 => 3rd logo
+    time.sleep(2)
+    actions.click_and_hold(third_logo).move_by_offset(-100,0).release().perform()
+    #alternatively:actions.drag_and_drop_by_offset(thrid_logo,-100,0).perform()
+
+    print("Dragged 3rd logo 100px to the left.")
+    time.sleep(2)
+else:
+    print("Less than 3 logos found")
+driver.quit()
+      </script>
+    </div>
+
+    <!-- action1c.py -->
+    <div class="card">
+      <div><span class="tag">Actions</span></div>
+      <div class="title">action1c.py</div>
+      <div class="scenario">Safer version of dragging 3rd logo (uses fresh locator to avoid stale refs).</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+
+# Launch browser
+driver = webdriver.Chrome()
+driver.set_page_load_timeout(20)
+driver.maximize_window()
+
+driver.get("https://imcc.mespune.in/")
+wait = WebDriverWait(driver, 15)
+actions = ActionChains(driver)
+
+# Locate "Prominent Recruiters" header
+header = wait.until(
+    EC.presence_of_element_located(
+        (By.XPATH, "//h2[contains(normalize-space(.),'Prominent Recruiters')]")
+    )
+)
+
+# Count logos
+logos = driver.find_elements(
+    By.XPATH, "//h2[contains(normalize-space(.),'Prominent Recruiters')]/following::img"
+)
+print("Total logos found:", len(logos))
+
+if len(logos) >= 3:
+    # Always re-fetch the 3rd logo fresh (avoids stale element reference)
+    third_logo = wait.until(
+        EC.visibility_of_element_located(
+            (By.XPATH, "(//h2[contains(normalize-space(.),'Prominent Recruiters')]/following::img)[3]")
+        )
+    )
+
+    time.sleep(2)
+
+    # Drag the 3rd logo 100px to the left
+    actions.click_and_hold(third_logo).move_by_offset(-100, 0).release().perform()
+    # OR:
+    # actions.drag_and_drop_by_offset(third_logo, -100, 0).perform()
+
+    print("Dragged 3rd logo 100px to the left.")
+    time.sleep(2)
+else:
+    print("Less than 3 logos found")
+
+driver.quit()
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('action1c_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="action1c_py">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+
+# Launch browser
+driver = webdriver.Chrome()
+driver.set_page_load_timeout(20)
+driver.maximize_window()
+
+driver.get("https://imcc.mespune.in/")
+wait = WebDriverWait(driver, 15)
+actions = ActionChains(driver)
+
+# Locate "Prominent Recruiters" header
+header = wait.until(
+    EC.presence_of_element_located(
+        (By.XPATH, "//h2[contains(normalize-space(.),'Prominent Recruiters')]")
+    )
+)
+
+# Count logos
+logos = driver.find_elements(
+    By.XPATH, "//h2[contains(normalize-space(.),'Prominent Recruiters')]/following::img"
+)
+print("Total logos found:", len(logos))
+
+if len(logos) >= 3:
+    # Always re-fetch the 3rd logo fresh (avoids stale element reference)
+    third_logo = wait.until(
+        EC.visibility_of_element_located(
+            (By.XPATH, "(//h2[contains(normalize-space(.),'Prominent Recruiters')]/following::img)[3]")
+        )
+    )
+
+    time.sleep(2)
+
+    # Drag the 3rd logo 100px to the left
+    actions.click_and_hold(third_logo).move_by_offset(-100, 0).release().perform()
+    # OR:
+    # actions.drag_and_drop_by_offset(third_logo, -100, 0).perform()
+
+    print("Dragged 3rd logo 100px to the left.")
+    time.sleep(2)
+else:
+    print("Less than 3 logos found")
+
+driver.quit()
+      </script>
+    </div>
+
+    <!-- alert.py (v1) -->
+    <div class="card">
+      <div><span class="tag">Alerts</span></div>
+      <div class="title">alert.py</div>
+      <div class="scenario">Trigger JS confirm alert and accept it.</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+
+driver = webdriver.Chrome()
+driver.get("https://the-internet.herokuapp.com/javascript_alerts")
+
+confirm_button = driver.find_element(By.XPATH,"//button[text()='Click for JS Confirm']")
+confirm_button.click()
+time.sleep(3)
+
+alert = driver.switch_to.alert
+
+print("Alert text: ", alert.text)
+alert.accept()
+
+result = driver.find_element(By.ID,"result")
+print("Page result after accepting alert: ", result.text)
+time.sleep(3)
+
+driver.quit()
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('alert_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="alert_py">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+
+driver = webdriver.Chrome()
+driver.get("https://the-internet.herokuapp.com/javascript_alerts")
+
+confirm_button = driver.find_element(By.XPATH,"//button[text()='Click for JS Confirm']")
+confirm_button.click()
+time.sleep(3)
+
+alert = driver.switch_to.alert
+
+print("Alert text: ", alert.text)
+alert.accept()
+
+result = driver.find_element(By.ID,"result")
+print("Page result after accepting alert: ", result.text)
+time.sleep(3)
+
+driver.quit()
+      </script>
+    </div>
+
+    <!-- alertm.py -->
+    <div class="card">
+      <div><span class="tag">Alerts</span></div>
+      <div class="title">alertm.py</div>
+      <div class="scenario">Click JS Alert, read text, accept.</div>
+      <div class="code-preview">
+from selenium import webdriver
+import time
+
+driver = webdriver.Chrome()
+driver.get("https://the-internet.herokuapp.com/javascript_alerts")
+
+# Click button to trigger alert
+driver.find_element("xpath", "//button[text()='Click for JS Alert']").click()
+time.sleep(3)
+
+# Switch to alert
+alert = driver.switch_to.alert
+print("Alert text:", alert.text)
+
+# Accept the alert
+alert.accept()
+
+time.sleep(3)
+driver.quit()
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('alertm_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="alertm_py">
+from selenium import webdriver
+import time
+
+driver = webdriver.Chrome()
+driver.get("https://the-internet.herokuapp.com/javascript_alerts")
+
+# Click button to trigger alert
+driver.find_element("xpath", "//button[text()='Click for JS Alert']").click()
+time.sleep(3)
+
+# Switch to alert
+alert = driver.switch_to.alert
+print("Alert text:", alert.text)
+
+# Accept the alert
+alert.accept()
+
+time.sleep(3)
+driver.quit()
+      </script>
+    </div>
+
+    <!-- alert.py (v2, improved name alert_v2.py) -->
+    <div class="card">
+      <div><span class="tag">Alerts</span></div>
+      <div class="title">alert_v2.py</div>
+      <div class="scenario">Alert confirm handling with final maximize and quit.</div>
+      <div class="code-preview">
+import time
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+driver=webdriver.Chrome()
+driver.get("https://the-internet.herokuapp.com/javascript_alerts")
+
+confirm_button=driver.find_element(By.XPATH,"//button[text()='Click for JS Confirm']")
+confirm_button.click()
+
+alert=driver.switch_to.alert
+
+print("Alert text: ", alert.text)
+alert.accept()
+time.sleep(1)
+
+result=driver.find_element(By.ID,"result")
+print("Page result after accepting alert:",result.text)
+
+driver.maximize_window()
+time.sleep(3)
+driver.quit()
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('alert_v2_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="alert_v2_py">
+import time
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+driver=webdriver.Chrome()
+driver.get("https://the-internet.herokuapp.com/javascript_alerts")
+
+confirm_button=driver.find_element(By.XPATH,"//button[text()='Click for JS Confirm']")
+confirm_button.click()
+
+alert=driver.switch_to.alert
+
+print("Alert text: ", alert.text)
+alert.accept()
+time.sleep(1)
+
+result=driver.find_element(By.ID,"result")
+print("Page result after accepting alert:",result.text)
+
+driver.maximize_window()
+time.sleep(3)
+driver.quit()
+      </script>
+    </div>
+
+    <!-- check.py -->
+    <div class="card">
+      <div><span class="tag">Checkboxes</span></div>
+      <div class="title">check.py</div>
+      <div class="scenario">Click toggling checkboxes on test page.</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+
+driver = webdriver.Chrome()
+driver.get("http://the-internet.herokuapp.com/checkboxes")
+
+checkbox1 = driver.find_element(By.XPATH,"//form[@id='checkboxes']/input[1]")
+checkbox2 = driver.find_element(By.XPATH,"//form[@id='checkboxes']/input[2]")
+
+checkbox1.click()
+time.sleep(5)
+checkbox1.click()
+time.sleep(5)
+checkbox2.click()
+time.sleep(5)
+checkbox2.click()
+time.sleep(5)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('check_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="check_py">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+
+driver = webdriver.Chrome()
+driver.get("http://the-internet.herokuapp.com/checkboxes")
+
+checkbox1 = driver.find_element(By.XPATH,"//form[@id='checkboxes']/input[1]")
+checkbox2 = driver.find_element(By.XPATH,"//form[@id='checkboxes']/input[2]")
+
+checkbox1.click()
+time.sleep(5)
+checkbox1.click()
+time.sleep(5)
+checkbox2.click()
+time.sleep(5)
+checkbox2.click()
+time.sleep(5)
+      </script>
+    </div>
+
+    <!-- check1.py -->
+    <div class="card">
+      <div><span class="tag">Checkboxes</span></div>
+      <div class="title">check1.py</div>
+      <div class="scenario">Conditional checkbox interactions using is_selected().</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+
+driver = webdriver.Chrome()
+driver.get("http://the-internet.herokuapp.com/checkboxes")
+
+checkbox1 = driver.find_element(By.XPATH,"//form[@id='checkboxes']/input[1]")
+checkbox2 = driver.find_element(By.XPATH,"//form[@id='checkboxes']/input[2]")
+
+time.sleep(5)
+if not checkbox1.is_selected():
+    checkbox1.click()
+time.sleep(5)
+if checkbox1.is_selected():
+    checkbox1.click()
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('check1_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="check1_py">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+
+driver = webdriver.Chrome()
+driver.get("http://the-internet.herokuapp.com/checkboxes")
+
+checkbox1 = driver.find_element(By.XPATH,"//form[@id='checkboxes']/input[1]")
+checkbox2 = driver.find_element(By.XPATH,"//form[@id='checkboxes']/input[2]")
+
+time.sleep(5)
+if not checkbox1.is_selected():
+    checkbox1.click()
+time.sleep(5)
+if checkbox1.is_selected():
+    checkbox1.click()
+      </script>
+    </div>
+
+    <!-- check_box.py -->
+    <div class="card">
+      <div><span class="tag">Checkboxes</span></div>
+      <div class="title">check_box.py</div>
+      <div class="scenario">More checkbox toggling + ensuring selected state.</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.common import TimeoutException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+import time
+
+driver = webdriver.Chrome()
+driver.get("https://the-internet.herokuapp.com/checkboxes")
+
+checkbox1 = driver.find_element(By.XPATH, "//form[@id='checkboxes']/input[1]")
+checkbox2 = driver.find_element(By.XPATH, "//form[@id='checkboxes']/input[2]")
+
+checkbox1.click()
+time.sleep(5)
+checkbox1.click()
+time.sleep(5)
+checkbox2.click()
+time.sleep(5)
+checkbox2.click()
+time.sleep(5)
+if not checkbox1.is_selected():
+    checkbox1.click()
+
+    time.sleep(5)
+if not checkbox2.is_selected():
+    checkbox2.click()
+    time.sleep(5)
+
+driver.quit()
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('check_box_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="check_box_py">
+from selenium import webdriver
+from selenium.common import TimeoutException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+import time
+
+driver = webdriver.Chrome()
+driver.get("https://the-internet.herokuapp.com/checkboxes")
+
+checkbox1 = driver.find_element(By.XPATH, "//form[@id='checkboxes']/input[1]")
+checkbox2 = driver.find_element(By.XPATH, "//form[@id='checkboxes']/input[2]")
+
+checkbox1.click()
+time.sleep(5)
+checkbox1.click()
+time.sleep(5)
+checkbox2.click()
+time.sleep(5)
+checkbox2.click()
+time.sleep(5)
+if not checkbox1.is_selected():
+    checkbox1.click()
+
+    time.sleep(5)
+if not checkbox2.is_selected():
+    checkbox2.click()
+    time.sleep(5)
+
+driver.quit()
+      </script>
+    </div>
+
+    <!-- dropdown.py -->
+    <div class="card">
+      <div><span class="tag">Dropdowns</span></div>
+      <div class="title">dropdown.py</div>
+      <div class="scenario">Select options by text, value, index and print selections.</div>
+      <div class="code-preview">
+import time
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import Select
+
+driver = webdriver.Chrome()
+driver.get("https://the-internet.herokuapp.com/dropdown")
+
+# locate dropdown
+mydropdown = driver.find_element(By.ID, "dropdown")
+dropdown = Select(mydropdown)
+
+# select by visible text
+dropdown.select_by_visible_text("Option 1")
+time.sleep(2)
+print(f"Selected option: {dropdown.first_selected_option.text}")
+
+# select by value
+dropdown.select_by_value("2")
+time.sleep(2)
+print(f"Selected option: {dropdown.first_selected_option.text}")
+
+# select by index (2 → Option 2)
+dropdown.select_by_index(2)
+time.sleep(2)
+print(f"Selected option: {dropdown.first_selected_option.text}")
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('dropdown_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="dropdown_py">
+import time
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import Select
+
+driver = webdriver.Chrome()
+driver.get("https://the-internet.herokuapp.com/dropdown")
+
+# locate dropdown
+mydropdown = driver.find_element(By.ID, "dropdown")
+dropdown = Select(mydropdown)
+
+# select by visible text
+dropdown.select_by_visible_text("Option 1")
+time.sleep(2)
+print(f"Selected option: {dropdown.first_selected_option.text}")
+
+# select by value
+dropdown.select_by_value("2")
+time.sleep(2)
+print(f"Selected option: {dropdown.first_selected_option.text}")
+
+# select by index (2 → Option 2)
+dropdown.select_by_index(2)
+time.sleep(2)
+print(f"Selected option: {dropdown.first_selected_option.text}")
+      </script>
+    </div>
+
+    <!-- dropdown1.py -->
+    <div class="card">
+      <div><span class="tag">Dropdowns</span></div>
+      <div class="title">dropdown1.py</div>
+      <div class="scenario">Multi-select dropdown example (select & deselect options).</div>
+      <div class="code-preview">
+#MULTI-SELECT DROPDOWN
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import Select
+
+driver = webdriver.Chrome()
+driver.get("http://demoqa.com/select-menu")
+multi_select_element = driver.find_element(By.ID,"cars")
+multi_select = Select(multi_select_element)
+
+multi_select.select_by_visible_text("Volvo")
+multi_select.deselect_by_visible_text("Volvo")
+
+multi_select.select_by_index(1)
+multi_select.select_by_value("audi")
+
+all_selected_opt_list = multi_select.all_selected_options
+for opt in all_selected_opt_list:
+    print(opt.text)
+
+multi_select.deselect_by_index(0)
+multi_select.deselect_by_value("audi")
+multi_select.deselect_all()
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('dropdown1_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="dropdown1_py">
+#MULTI-SELECT DROPDOWN
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import Select
+
+driver = webdriver.Chrome()
+driver.get("http://demoqa.com/select-menu")
+multi_select_element = driver.find_element(By.ID,"cars")
+multi_select = Select(multi_select_element)
+
+multi_select.select_by_visible_text("Volvo")
+multi_select.deselect_by_visible_text("Volvo")
+
+multi_select.select_by_index(1)
+multi_select.select_by_value("audi")
+
+all_selected_opt_list = multi_select.all_selected_options
+for opt in all_selected_opt_list:
+    print(opt.text)
+
+multi_select.deselect_by_index(0)
+multi_select.deselect_by_value("audi")
+multi_select.deselect_all()
+      </script>
+    </div>
+
+    <!-- Dropdown.py (capital D) -->
+    <div class="card">
+      <div><span class="tag">Dropdowns</span></div>
+      <div class="title">Dropdown.py</div>
+      <div class="scenario">Dropdown with deselect examples and prints.</div>
+      <div class="code-preview">
+import time
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import Select
+
+driver = webdriver.Chrome()
+driver.get("https://the-internet.herokuapp.com/dropdown")
+mydropdown = driver.find_element(By.ID, "dropdown")
+dropdown = Select(mydropdown)
+
+dropdown.select_by_visible_text("Option 1")
+time.sleep(5)
+
+selected_option = dropdown.first_selected_option
+print(f"Selected option: {selected_option.text}")
+dropdown.select_by_value("2")
+time.sleep(5)
+dropdown.select_by_index(1)
+time.sleep(5)
+
+dropdown.deselect_by_visible_text("Option 1")
+dropdown.deselect_all()
+
+driver.quit()
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('Dropdown_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="Dropdown_py">
+import time
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import Select
+
+driver = webdriver.Chrome()
+driver.get("https://the-internet.herokuapp.com/dropdown")
+mydropdown = driver.find_element(By.ID, "dropdown")
+dropdown = Select(mydropdown)
+
+dropdown.select_by_visible_text("Option 1")
+time.sleep(5)
+
+selected_option = dropdown.first_selected_option
+print(f"Selected option: {selected_option.text}")
+dropdown.select_by_value("2")
+time.sleep(5)
+dropdown.select_by_index(1)
+time.sleep(5)
+
+dropdown.deselect_by_visible_text("Option 1")
+dropdown.deselect_all()
+
+driver.quit()
+      </script>
+    </div>
+
+    <!-- frame.py -->
+    <div class="card">
+      <div><span class="tag">Frames</span></div>
+      <div class="title">frame.py</div>
+      <div class="scenario">Switch into tinyMCE iframe, type 'India', then back to main page.</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+
+driver = webdriver.Chrome()
+driver.get("https://the-internet.herokuapp.com/iframe")
+
+# Switch into iframe
+driver.switch_to.frame("mce_0_ifr")
+print("Switched to iframe")
+
+iframe_body = driver.find_element(By.TAG_NAME, "body")
+iframe_body.send_keys("India")
+
+time.sleep(5)
+
+driver.switch_to.default_content()
+
+main_header = driver.find_element(By.TAG_NAME, "h3")
+print("Main Document Header: ", main_header.text)
+
+time.sleep(5)
+
+driver.quit()
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('frame_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="frame_py">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+
+driver = webdriver.Chrome()
+driver.get("https://the-internet.herokuapp.com/iframe")
+
+# Switch into iframe
+driver.switch_to.frame("mce_0_ifr")
+print("Switched to iframe")
+
+iframe_body = driver.find_element(By.TAG_NAME, "body")
+iframe_body.send_keys("India")
+
+time.sleep(5)
+
+driver.switch_to.default_content()
+
+main_header = driver.find_element(By.TAG_NAME, "h3")
+print("Main Document Header: ", main_header.text)
+
+time.sleep(5)
+
+driver.quit()
+      </script>
+    </div>
+
+    <!-- frame1.py -->
+    <div class="card">
+      <div><span class="tag">Frames</span></div>
+      <div class="title">frame1.py</div>
+      <div class="scenario">Nested frames navigation: top→left/middle→bottom.</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+
+driver = webdriver.Chrome()
+driver.get("https://the-internet.herokuapp.com/nested_frames")
+
+driver.switch_to.frame("frame-top") #Switch to top frame (main frame)
+print("Switch to top frame")
+
+driver.switch_to.frame("frame-left") #Switch to left frame within top frame
+print("Switch to left frame")
+
+left_frame = driver.find_element(By.TAG_NAME, "body")
+print("Left Frame Text: ", left_frame.text) #get text from the left frame
+
+driver.switch_to.parent_frame()#Switch back to the top frame
+print("Switched back to top frame")
+
+driver.switch_to.frame("frame-middle") #Switch to middle frame within top frame
+print("Switch to middle frame")
+
+middle_frame = driver.find_element(By.TAG_NAME, "body")
+print("Middle Frame Text: ", middle_frame.text) #get text from the middle frame
+
+driver.switch_to.parent_frame()#Switch back to the top frame
+print("Switched back to top frame")
+
+driver.switch_to.default_content()
+
+driver.switch_to.frame("frame-bottom") #Now switch to bottom frame
+bottom_frame = driver.find_element(By.TAG_NAME, "body")
+print("Bottom Frame Text: ", bottom_frame.text) # Get text from bottom frame
+
+driver.quit()
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('frame1_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="frame1_py">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+
+driver = webdriver.Chrome()
+driver.get("https://the-internet.herokuapp.com/nested_frames")
+
+driver.switch_to.frame("frame-top") #Switch to top frame (main frame)
+print("Switch to top frame")
+
+driver.switch_to.frame("frame-left") #Switch to left frame within top frame
+print("Switch to left frame")
+
+left_frame = driver.find_element(By.TAG_NAME, "body")
+print("Left Frame Text: ", left_frame.text) #get text from the left frame
+
+driver.switch_to.parent_frame()#Switch back to the top frame
+print("Switched back to top frame")
+
+driver.switch_to.frame("frame-middle") #Switch to middle frame within top frame
+print("Switch to middle frame")
+
+middle_frame = driver.find_element(By.TAG_NAME, "body")
+print("Middle Frame Text: ", middle_frame.text) #get text from the middle frame
+
+driver.switch_to.parent_frame()#Switch back to the top frame
+print("Switched back to top frame")
+
+driver.switch_to.default_content()
+
+driver.switch_to.frame("frame-bottom") #Now switch to bottom frame
+bottom_frame = driver.find_element(By.TAG_NAME, "body")
+print("Bottom Frame Text: ", bottom_frame.text) # Get text from bottom frame
+
+driver.quit()
+      </script>
+    </div>
+
+    <!-- framem.py -->
+    <div class="card">
+      <div><span class="tag">Frames</span></div>
+      <div class="title">framem.py</div>
+      <div class="scenario">Detailed nested frames example with different frame areas.</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+
+driver = webdriver.Chrome()
+driver.get("https://the-internet.herokuapp.com/nested_frames")
+
+# ---- TOP → LEFT ----
+driver.switch_to.frame("frame-top")   # switch to top frame
+print("Switched to top frame")
+
+driver.switch_to.frame("frame-left")  # inside left frame
+print("Switched to left frame")
+left_frame = driver.find_element(By.TAG_NAME, "body")
+print("Left Frame Text:", left_frame.text)
+
+driver.switch_to.parent_frame()       # back to top
+print("Back to top frame")
+
+# ---- TOP → MIDDLE ----
+driver.switch_to.frame("frame-middle")
+print("Switched to middle frame")
+middle_frame = driver.find_element(By.ID, "content")
+print("Middle Frame Text:", middle_frame.text)
+
+driver.switch_to.parent_frame()       # back to top
+print("Back to top frame")
+
+# ---- TOP → RIGHT ----
+driver.switch_to.frame("frame-right")
+print("Switched to right frame")
+right_frame = driver.find_element(By.TAG_NAME, "body")
+print("Right Frame Text:", right_frame.text)
+
+# Back to root (default content)
+driver.switch_to.default_content()
+print("Back to main document")
+
+# ---- BOTTOM ----
+driver.switch_to.frame("frame-bottom")
+print("Switched to bottom frame")
+bottom_frame = driver.find_element(By.TAG_NAME, "body")
+print("Bottom Frame Text:", bottom_frame.text)
+
+time.sleep(5)
+driver.quit()
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('framem_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="framem_py">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+
+driver = webdriver.Chrome()
+driver.get("https://the-internet.herokuapp.com/nested_frames")
+
+# ---- TOP → LEFT ----
+driver.switch_to.frame("frame-top")   # switch to top frame
+print("Switched to top frame")
+
+driver.switch_to.frame("frame-left")  # inside left frame
+print("Switched to left frame")
+left_frame = driver.find_element(By.TAG_NAME, "body")
+print("Left Frame Text:", left_frame.text)
+
+driver.switch_to.parent_frame()       # back to top
+print("Back to top frame")
+
+# ---- TOP → MIDDLE ----
+driver.switch_to.frame("frame-middle")
+print("Switched to middle frame")
+middle_frame = driver.find_element(By.ID, "content")
+print("Middle Frame Text:", middle_frame.text)
+
+driver.switch_to.parent_frame()       # back to top
+print("Back to top frame")
+
+# ---- TOP → RIGHT ----
+driver.switch_to.frame("frame-right")
+print("Switched to right frame")
+right_frame = driver.find_element(By.TAG_NAME, "body")
+print("Right Frame Text:", right_frame.text)
+
+# Back to root (default content)
+driver.switch_to.default_content()
+print("Back to main document")
+
+# ---- BOTTOM ----
+driver.switch_to.frame("frame-bottom")
+print("Switched to bottom frame")
+bottom_frame = driver.find_element(By.TAG_NAME, "body")
+print("Bottom Frame Text:", bottom_frame.text)
+
+time.sleep(5)
+driver.quit()
+      </script>
+    </div>
+
+    <!-- main.py -->
+    <div class="card">
+      <div><span class="tag">Navigation</span></div>
+      <div class="title">main.py</div>
+      <div class="scenario">Open Google, type "The Batman" and wait for input to exit.</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
+# 1. Initialize Chrome browser (with parentheses)
+driver = webdriver.Chrome()
+
+# 2. Open Google
+driver.get("https://www.google.com/")
+
+# 3. Print the page title
+print("Page title:", driver.title)
+
+# 4. Maximize window
+driver.maximize_window()
+
+# 5. Find element by ID (example: search box has ID 'APjFqb')
+search_box = driver.find_element(By.ID, "APjFqb")
+print("Search box element:", search_box)
+
+#Using Webelement Locator for XPATH
+search_txtbox = driver.find_element(By.XPATH,"//textarea")
+search_txtbox.send_keys('The Batman')
+#search_txtbox.clear()
+search_txtbox.send_keys(Keys.ENTER)
+
+input("hhh")
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('main_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="main_py">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
+# 1. Initialize Chrome browser (with parentheses)
+driver = webdriver.Chrome()
+
+# 2. Open Google
+driver.get("https://www.google.com/")
+
+# 3. Print the page title
+print("Page title:", driver.title)
+
+# 4. Maximize window
+driver.maximize_window()
+
+# 5. Find element by ID (example: search box has ID 'APjFqb')
+search_box = driver.find_element(By.ID, "APjFqb")
+print("Search box element:", search_box)
+
+#Using Webelement Locator for XPATH
+search_txtbox = driver.find_element(By.XPATH,"//textarea")
+search_txtbox.send_keys('The Batman')
+#search_txtbox.clear()
+search_txtbox.send_keys(Keys.ENTER)
+
+input("hhh")
+      </script>
+    </div>
+
+    <!-- main1.py -->
+    <div class="card">
+      <div><span class="tag">Navigation</span></div>
+      <div class="title">main1.py</div>
+      <div class="scenario">Google search typed via explicit textarea locator.</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
+# 1. Initialize Chrome browser (with parentheses)
+driver = webdriver.Chrome()
+
+# 2. Open Google
+driver.get("https://www.google.com/")
+
+# 3. Print the page title
+print("Page title:", driver.title)
+
+# 4. Maximize window
+driver.maximize_window()
+
+# 5. Find element by ID (example: search box has ID 'APjFqb')
+search_box = driver.find_element(By.ID, "APjFqb")
+print("Search box element:", search_box)
+
+#Using Webelement Locator for XPATH
+search_txtbox = driver.find_element(By.XPATH,"//textarea[@name='q']")
+search_txtbox.send_keys('The Batman')
+search_txtbox.clear()
+search_txtbox.send_keys(Keys.ENTER)
+
+input("hhh")
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('main1_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="main1_py">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
+# 1. Initialize Chrome browser (with parentheses)
+driver = webdriver.Chrome()
+
+# 2. Open Google
+driver.get("https://www.google.com/")
+
+# 3. Print the page title
+print("Page title:", driver.title)
+
+# 4. Maximize window
+driver.maximize_window()
+
+# 5. Find element by ID (example: search box has ID 'APjFqb')
+search_box = driver.find_element(By.ID, "APjFqb")
+print("Search box element:", search_box)
+
+#Using Webelement Locator for XPATH
+search_txtbox = driver.find_element(By.XPATH,"//textarea[@name='q']")
+search_txtbox.send_keys('The Batman')
+search_txtbox.clear()
+search_txtbox.send_keys(Keys.ENTER)
+
+input("hhh")
+      </script>
+    </div>
+
+    <!-- main2.py -->
+    <div class="card">
+      <div><span class="tag">Navigation</span></div>
+      <div class="title">main2.py</div>
+      <div class="scenario">Demonstrates find_element vs find_elements and error when using list incorrectly.</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
+# 1. Initialize Chrome browser (with parentheses)
+driver = webdriver.Chrome()
+
+# 2. Open Google
+driver.get("https://www.google.com/")
+
+single_search_txtbox = driver.find_element(By.XPATH,"//textarea")
+
+multi_search_txtbox = driver.find_elements(By.XPATH,"//textarea")
+
+# print(type(single_search_txtbox))
+# print(type(multi_search_txtbox))
+
+# Output:
+# DevTools listening on ws://127.0.0.1:51218/devtools/browser/d05b8d81-db8b-4ecb-8230-c0cd86082b19
+# <class 'selenium.webdriver.remote.webelement.WebElement'>
+# <class 'list'>
+
+# print("first: ", single_search_txtbox)
+# print("second: ", multi_search_txtbox)
+
+multi_search_txtbox.send_keys('The Batman')
+multi_search_txtbox.send_keys(Keys.ENTER)
+
+input("Enter something to end program: ")
+
+# Output:
+# py main2.py
+
+# DevTools listening on ws://127.0.0.1:60471/devtools/browser/a5d4f296-8352-4593-bcbc-c6efdd072ca3
+# Traceback (most recent call last):
+#   File "D:\Selenium\main2.py", line 26, in <module>
+#     multi_search_txtbox.send_keys('The Batman')
+#     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# AttributeError: 'list' object has no attribute 'send_keys'
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('main2_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="main2_py">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
+# 1. Initialize Chrome browser (with parentheses)
+driver = webdriver.Chrome()
+
+# 2. Open Google
+driver.get("https://www.google.com/")
+
+single_search_txtbox = driver.find_element(By.XPATH,"//textarea")
+
+multi_search_txtbox = driver.find_elements(By.XPATH,"//textarea")
+
+# print(type(single_search_txtbox))
+# print(type(multi_search_txtbox))
+
+# Output:
+# DevTools listening on ws://127.0.0.1:51218/devtools/browser/d05b8d81-db8b-4ecb-8230-c0cd86082b19
+# <class 'selenium.webdriver.remote.webelement.WebElement'>
+# <class 'list'>
+
+# print("first: ", single_search_txtbox)
+# print("second: ", multi_search_txtbox)
+
+multi_search_txtbox.send_keys('The Batman')
+multi_search_txtbox.send_keys(Keys.ENTER)
+
+input("Enter something to end program: ")
+      </script>
+    </div>
+
+    <!-- main2c.py -->
+    <div class="card">
+      <div><span class="tag">Navigation</span></div>
+      <div class="title">main2c.py</div>
+      <div class="scenario">Corrected main2: uses first element of find_elements to send keys.</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
+# 1. Initialize Chrome browser
+driver = webdriver.Chrome()
+
+# 2. Open Google
+driver.get("https://www.google.com/")
+
+# Find single and multiple textareas
+single_search_txtbox = driver.find_element(By.XPATH, "//textarea")
+multi_search_txtbox = driver.find_elements(By.XPATH, "//textarea")
+
+# Use the first element from the list
+search_box = multi_search_txtbox[0]
+
+# Type search text and press Enter
+search_box.send_keys("The Batman")
+search_box.send_keys(Keys.ENTER)
+
+input("Enter something to end program: ")
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('main2c_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="main2c_py">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
+# 1. Initialize Chrome browser
+driver = webdriver.Chrome()
+
+# 2. Open Google
+driver.get("https://www.google.com/")
+
+# Find single and multiple textareas
+single_search_txtbox = driver.find_element(By.XPATH, "//textarea")
+multi_search_txtbox = driver.find_elements(By.XPATH, "//textarea")
+
+# Use the first element from the list
+search_box = multi_search_txtbox[0]
+
+# Type search text and press Enter
+search_box.send_keys("The Batman")
+search_box.send_keys(Keys.ENTER)
+
+input("Enter something to end program: ")
+      </script>
+    </div>
+
+    <!-- main3.py -->
+    <div class="card">
+      <div><span class="tag">Windows</span></div>
+      <div class="title">main3.py</div>
+      <div class="scenario">Open new window/tab examples and demonstrates quit vs close.</div>
+      <div class="code-preview">
+# difference between close() and quit()
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+import time
+
+# 1. Initialize Chrome browser (with parentheses)
+driver = webdriver.Chrome()
+
+# 2. Open Google
+driver.get("https://www.google.com/")
+
+driver.switch_to.new_window("window")
+driver.get("https://www.facebook.com")
+
+driver.switch_to.new_window("tab")
+driver.get("http://www.youtube.com")
+time.sleep(10)
+
+#driver.close()#will close current browser window
+driver.quit() #will close all window
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('main3_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="main3_py">
+# difference between close() and quit()
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+import time
+
+# 1. Initialize Chrome browser (with parentheses)
+driver = webdriver.Chrome()
+
+# 2. Open Google
+driver.get("https://www.google.com/")
+
+driver.switch_to.new_window("window")
+driver.get("https://www.facebook.com")
+
+driver.switch_to.new_window("tab")
+driver.get("http://www.youtube.com")
+time.sleep(10)
+
+#driver.close()#will close current browser window
+driver.quit() #will close all window
+      </script>
+    </div>
+
+    <!-- mainnav.py -->
+    <div class="card">
+      <div><span class="tag">Navigation</span></div>
+      <div class="title">mainnav.py</div>
+      <div class="scenario">Navigate between pages, refresh, back and forward; then search.</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
+# 1. Initialize Chrome browser (with parentheses)
+driver = webdriver.Chrome()
+
+# 2. Open Google
+driver.get("https://www.google.com/")
+driver.get("https://monkeytype.com/")
+driver.maximize_window()
+
+driver.refresh()
+input("Enter to Backward")
+driver.back()
+input("Enter to go foward")
+driver.forward()
+
+#Using Webelement Locator for XPATH
+search_txtbox = driver.find_element(By.XPATH,"//textarea[@name='q']")
+search_txtbox.send_keys('The Batman')
+search_txtbox.send_keys(Keys.ENTER)
+
+search_txtbox.send_keys('m')
+
+input("hhh")
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('mainnav_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="mainnav_py">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
+# 1. Initialize Chrome browser (with parentheses)
+driver = webdriver.Chrome()
+
+# 2. Open Google
+driver.get("https://www.google.com/")
+driver.get("https://monkeytype.com/")
+driver.maximize_window()
+
+driver.refresh()
+input("Enter to Backward")
+driver.back()
+input("Enter to go foward")
+driver.forward()
+
+#Using Webelement Locator for XPATH
+search_txtbox = driver.find_element(By.XPATH,"//textarea[@name='q']")
+search_txtbox.send_keys('The Batman')
+search_txtbox.send_keys(Keys.ENTER)
+
+search_txtbox.send_keys('m')
+
+input("hhh")
+      </script>
+    </div>
+
+    <!-- mainnav2.py -->
+    <div class="card">
+      <div><span class="tag">Navigation</span></div>
+      <div class="title">mainnav2.py</div>
+      <div class="scenario">Print current URL, title and page source for MonkeyType.</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
+driver = webdriver.Chrome()
+
+driver.get("https://monkeytype.com/")
+driver.maximize_window()
+
+current_url = driver.current_url
+print("Current page URL: ", current_url)
+
+current_title = driver.title
+print("Current page Title: ", current_title)
+
+current_page_source = driver.page_source
+print("Current Page Source: ", current_page_source)
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('mainnav2_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="mainnav2_py">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
+driver = webdriver.Chrome()
+
+driver.get("https://monkeytype.com/")
+driver.maximize_window()
+
+current_url = driver.current_url
+print("Current page URL: ", current_url)
+
+current_title = driver.title
+print("Current page Title: ", current_title)
+
+current_page_source = driver.page_source
+print("Current Page Source: ", current_page_source)
+      </script>
+    </div>
+
+    <!-- miscellaneous.py -->
+    <div class="card">
+      <div><span class="tag">Misc</span></div>
+      <div class="title">miscellaneous.py</div>
+      <div class="scenario">Screenshots, logo screenshot, window size/position manipulations.</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+
+driver = webdriver.Chrome()
+driver.get("https://www.google.com/")
+
+driver.save_screenshot('arnav.png') #Takes a full page screenshot and saves in root
+
+google_logo = driver.find_element(By.XPATH,"//div[@class='k1zIA rSk4se']//*[name()='svg']")
+google_logo.screenshot("img_logo.png")
+
+driver.maximize_window()  # Maximizes the current window
+time.sleep(3)
+
+driver.minimize_window()  # Minimizes the current window
+time.sleep(3)
+
+driver.fullscreen_window()  # Sets the current window to fullscreen
+time.sleep(3)
+
+# Get current window position
+window_position = driver.get_window_position()
+print("Window Position: ", window_position)
+
+# Set window position
+driver.set_window_position(200, 100)
+time.sleep(3)
+
+# Get current window size
+window_size = driver.get_window_size()
+print("Window Size: ", window_size)
+
+# Set window size
+driver.set_window_size(1024, 768)
+time.sleep(3)
+
+driver.quit()
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('miscellaneous_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="miscellaneous_py">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+
+driver = webdriver.Chrome()
+driver.get("https://www.google.com/")
+
+driver.save_screenshot('arnav.png') #Takes a full page screenshot and saves in root
+
+google_logo = driver.find_element(By.XPATH,"//div[@class='k1zIA rSk4se']//*[name()='svg']")
+google_logo.screenshot("img_logo.png")
+
+driver.maximize_window()  # Maximizes the current window
+time.sleep(3)
+
+driver.minimize_window()  # Minimizes the current window
+time.sleep(3)
+
+driver.fullscreen_window()  # Sets the current window to fullscreen
+time.sleep(3)
+
+# Get current window position
+window_position = driver.get_window_position()
+print("Window Position: ", window_position)
+
+# Set window position
+driver.set_window_position(200, 100)
+time.sleep(3)
+
+# Get current window size
+window_size = driver.get_window_size()
+print("Window Size: ", window_size)
+
+# Set window size
+driver.set_window_size(1024, 768)
+time.sleep(3)
+
+driver.quit()
+      </script>
+    </div>
+
+    <!-- multi_dropdown.py -->
+    <div class="card">
+      <div><span class="tag">Dropdowns</span></div>
+      <div class="title">multi_dropdown.py</div>
+      <div class="scenario">Demo multi-select dropdown interactions and prints options.</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import Select
+
+driver = webdriver.Chrome()
+driver.get("https://demoqa.com/select-menu")
+multi_select_element = driver.find_element(By.ID,"cars")
+multi_select = Select(multi_select_element)
+
+multi_select.select_by_visible_text("Volvo")
+multi_select.deselect_by_visible_text("Volvo")
+
+multi_select.select_by_index(1)
+multi_select.select_by_value("audi")
+
+all_selected_opt_list = multi_select.all_selected_options
+for option in all_selected_opt_list:
+    print(option.text)
+
+multi_select.deselect_by_index(0)
+multi_select.select_by_value("audi")
+multi_select.deselect_all()
+driver.quit()
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('multi_dropdown_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="multi_dropdown_py">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import Select
+
+driver = webdriver.Chrome()
+driver.get("https://demoqa.com/select-menu")
+multi_select_element = driver.find_element(By.ID,"cars")
+multi_select = Select(multi_select_element)
+
+multi_select.select_by_visible_text("Volvo")
+multi_select.deselect_by_visible_text("Volvo")
+
+multi_select.select_by_index(1)
+multi_select.select_by_value("audi")
+
+all_selected_opt_list = multi_select.all_selected_options
+for option in all_selected_opt_list:
+    print(option.text)
+
+multi_select.deselect_by_index(0)
+multi_select.select_by_value("audi")
+multi_select.deselect_all()
+driver.quit()
+      </script>
+    </div>
+
+    <!-- imccweb.py -->
+    <div class="card">
+      <div><span class="tag">Actions</span></div>
+      <div class="title">imccweb.py</div>
+      <div class="scenario">IMCC site: count logos and drag the third one if present.</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+
+driver=webdriver.Chrome()
+driver.set_page_load_timeout(20)
+driver.maximize_window()
+
+driver.get("https://imcc.mespune.in/")
+wait = WebDriverWait(driver,15)
+actions = ActionChains(driver)
+
+header=wait.until(
+    EC.presence_of_element_located((By.XPATH,"//h2[contains(normalize-space(.),'Prominent Recruiters')]"))
+)
+
+logos=driver.find_elements(By.XPATH,"//h2[contains(normalize-space(.),'Prominent Recruiters')]/following::img")
+
+if len(logos)>=3:
+    third_logo=wait.until(EC.visibility_of(logos[2]))
+    time.sleep(2)
+    actions.click_and_hold(third_logo).move_by_offset(-100, 0).release().perform()
+
+    print("Dragged 3rd logo 100px to the left.")
+    time.sleep(2)
+else:
+    print("Less than 3 logos found")
+driver.quit()
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('imccweb_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="imccweb_py">
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+
+driver=webdriver.Chrome()
+driver.set_page_load_timeout(20)
+driver.maximize_window()
+
+driver.get("https://imcc.mespune.in/")
+wait = WebDriverWait(driver,15)
+actions = ActionChains(driver)
+
+header=wait.until(
+    EC.presence_of_element_located((By.XPATH,"//h2[contains(normalize-space(.),'Prominent Recruiters')]"))
+)
+
+logos=driver.find_elements(By.XPATH,"//h2[contains(normalize-space(.),'Prominent Recruiters')]/following::img")
+
+if len(logos)>=3:
+    third_logo=wait.until(EC.visibility_of(logos[2]))
+    time.sleep(2)
+    actions.click_and_hold(third_logo).move_by_offset(-100, 0).release().perform()
+
+    print("Dragged 3rd logo 100px to the left.")
+    time.sleep(2)
+else:
+    print("Less than 3 logos found")
+driver.quit()
+      </script>
+    </div>
+
+    <!-- practice.py -->
+    <div class="card">
+      <div><span class="tag">Facebook</span></div>
+      <div class="title">practice.py</div>
+      <div class="scenario">Automates creation of FB account (demo/dummy data). Use with caution.</div>
+      <div class="code-preview">
+"""
+This script automates the process of opening Facebook, 
+clicking the 'Create new account' button, and filling out 
+the sign-up form using Selenium WebDriver in Python.
+...
+"""
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait, Select
+from selenium.webdriver.support import expected_conditions as EC
+import time
+
+driver = webdriver.Chrome()
+driver.get("https://www.fb.com/")
+driver.maximize_window()
+
+wait = WebDriverWait(driver, 15)
+
+# Step 1: Click "Create new account"
+create_new_account = wait.until(
+    EC.element_to_be_clickable((By.XPATH, '//a[@data-testid="open-registration-form-button"]'))
+)
+create_new_account.click()
+
+# Step 2: Fill form fields
+first_name = wait.until(EC.presence_of_element_located((By.NAME, "firstname")))
+first_name.send_keys("Arnav")
+
+last_name = driver.find_element(By.NAME, "lastname")
+last_name.send_keys("Chandure")
+
+email = driver.find_element(By.NAME, "reg_email__")
+email.send_keys("arnav123@example.com")
+
+password = driver.find_element(By.NAME, "reg_passwd__")
+password.send_keys("StrongPassword123")
+
+# Step 3: Select date of birth
+Select(driver.find_element(By.NAME, "birthday_day")).select_by_visible_text("16")
+Select(driver.find_element(By.NAME, "birthday_month")).select_by_visible_text("Sep")
+Select(driver.find_element(By.NAME, "birthday_year")).select_by_visible_text("2000")
+
+# Step 4: Select gender (Male)
+gender = driver.find_element(By.XPATH, '//input[@name="sex" and @value="2"]')
+gender.click()
+
+# Step 5: Click Sign Up
+signup_btn = driver.find_element(By.NAME, "websubmit")
+signup_btn.click()
+
+time.sleep(10)
+driver.quit()
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('practice_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="practice_py">
+"""
+This script automates the process of opening Facebook, 
+clicking the 'Create new account' button, and filling out 
+the sign-up form using Selenium WebDriver in Python.
+
+Steps performed:
+1. Launches Chrome browser and navigates to Facebook.
+2. Waits until the 'Create new account' button is clickable and clicks it.
+3. Fills out the registration form fields:
+   - First name
+   - Surname
+   - Mobile number or email
+   - Password
+   - Date of birth (day, month, year)
+   - Gender (Male in this example)
+4. Submits the form by clicking the 'Sign Up' button.
+5. Waits for 10 seconds before closing the browser.
+
+Note:
+- Dummy data is used for demonstration purposes.
+- Some fields (like 'Re-enter email') may appear dynamically 
+  and should be handled with explicit waits if needed.
+- This script is for practice/learning only; 
+  Facebook may block automated sign-ups using real information.
+"""
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait, Select
+from selenium.webdriver.support import expected_conditions as EC
+import time
+
+driver = webdriver.Chrome()
+driver.get("https://www.fb.com/")
+driver.maximize_window()
+
+wait = WebDriverWait(driver, 15)
+
+# Step 1: Click "Create new account"
+create_new_account = wait.until(
+    EC.element_to_be_clickable((By.XPATH, '//a[@data-testid="open-registration-form-button"]'))
+)
+create_new_account.click()
+
+# Step 2: Fill form fields
+first_name = wait.until(EC.presence_of_element_located((By.NAME, "firstname")))
+first_name.send_keys("Arnav")
+
+last_name = driver.find_element(By.NAME, "lastname")
+last_name.send_keys("Chandure")
+
+email = driver.find_element(By.NAME, "reg_email__")
+email.send_keys("arnav123@example.com")
+
+password = driver.find_element(By.NAME, "reg_passwd__")
+password.send_keys("StrongPassword123")
+
+# Step 3: Select date of birth
+Select(driver.find_element(By.NAME, "birthday_day")).select_by_visible_text("16")
+Select(driver.find_element(By.NAME, "birthday_month")).select_by_visible_text("Sep")
+Select(driver.find_element(By.NAME, "birthday_year")).select_by_visible_text("2000")
+
+# Step 4: Select gender (Male)
+gender = driver.find_element(By.XPATH, '//input[@name="sex" and @value="2"]')
+gender.click()
+
+# Step 5: Click Sign Up
+signup_btn = driver.find_element(By.NAME, "websubmit")
+signup_btn.click()
+
+time.sleep(10)
+driver.quit()
+      </script>
+    </div>
+
+    <!-- radio.py -->
+    <div class="card">
+      <div><span class="tag">Facebook</span></div>
+      <div class="title">radio.py</div>
+      <div class="scenario">Click Create new account button and wait briefly (demo).</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+
+# 1. Initialize Chrome browser
+driver = webdriver.Chrome()
+
+# 2. Open Facebook
+driver.get("https://www.fb.com/")
+
+# 3. Wait until "Create new account" button is clickable
+wait = WebDriverWait(driver, 15)
+create_new_account = wait.until(
+    EC.element_to_be_clickable((By.XPATH, '//a[@data-testid="open-registration-form-button"]'))
+)
+
+time.sleep(5)
+
+# 4. Click the button
+create_new_account.click()
+
+time.sleep(10)  # Just to keep the window open so you can see the result
+driver.quit()
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('radio_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="radio_py">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+
+# 1. Initialize Chrome browser
+driver = webdriver.Chrome()
+
+# 2. Open Facebook
+driver.get("https://www.fb.com/")
+
+# 3. Wait until "Create new account" button is clickable
+wait = WebDriverWait(driver, 15)
+create_new_account = wait.until(
+    EC.element_to_be_clickable((By.XPATH, '//a[@data-testid="open-registration-form-button"]'))
+)
+
+time.sleep(5)
+
+# 4. Click the button
+create_new_account.click()
+
+time.sleep(10)  # Just to keep the window open so you can see the result
+driver.quit()
+      </script>
+    </div>
+
+    <!-- value.py -->
+    <div class="card">
+      <div><span class="tag">Attributes</span></div>
+      <div class="title">value.py</div>
+      <div class="scenario">Read input attributes like maxlength and id; show value before/after typing.</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+driver = webdriver.Chrome()
+driver.get("https://www.google.com")
+search_box = driver.find_element(By.NAME,"q")
+
+print("maxlenght: ", search_box.get_attribute("maxlength"))
+print("id: ", search_box.get_attribute("id"))
+
+print("value(before typing): "), search_box.get_attribute("value")
+search_box.send_keys("IMCC")
+print("value(after typing): ", search_box.get_attribute("value"))
+
+driver.quit()
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('value_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="value_py">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+driver = webdriver.Chrome()
+driver.get("https://www.google.com")
+search_box = driver.find_element(By.NAME,"q")
+
+print("maxlenght: ", search_box.get_attribute("maxlength"))
+print("id: ", search_box.get_attribute("id"))
+
+print("value(before typing): "), search_box.get_attribute("value")
+search_box.send_keys("IMCC")
+print("value(after typing): ", search_box.get_attribute("value"))
+
+driver.quit()
+      </script>
+    </div>
+
+    <!-- wait.py -->
+    <div class="card">
+      <div><span class="tag">Waits</span></div>
+      <div class="title">wait.py</div>
+      <div class="scenario">Demonstrates implicit, explicit, and fluent waits.</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+driver = webdriver.Chrome()
+driver.get("http://www.google.com")
+
+# Implicit Wait
+driver.implicitly_wait(10)
+search_box = driver.find_element(By.NAME,"q")
+search_box.send_keys("Pune")
+
+# Explicit Wait
+wait = WebDriverWait(driver, 15)
+search_box_explicit = wait.until(
+    EC.presence_of_element_located((By.NAME, "q"))
+)
+search_box_explicit.send_keys(" Maharashtra")
+
+# Fluent Wait
+polling_wait = WebDriverWait(driver, 20, poll_frequency=3, ignored_exceptions=[Exception])
+search_box_polling = polling_wait.until(
+    EC.visibility_of_element_located((By.NAME,"q"))
+)
+search_box_polling.send_keys(" India")
+
+driver.quit()
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('wait_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="wait_py">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+driver = webdriver.Chrome()
+driver.get("http://www.google.com")
+
+# Implicit Wait
+driver.implicitly_wait(10)
+search_box = driver.find_element(By.NAME,"q")
+search_box.send_keys("Pune")
+
+# Explicit Wait
+wait = WebDriverWait(driver, 15)
+search_box_explicit = wait.until(
+    EC.presence_of_element_located((By.NAME, "q"))
+)
+search_box_explicit.send_keys(" Maharashtra")
+
+# Fluent Wait
+polling_wait = WebDriverWait(driver, 20, poll_frequency=3, ignored_exceptions=[Exception])
+search_box_polling = polling_wait.until(
+    EC.visibility_of_element_located((By.NAME,"q"))
+)
+search_box_polling.send_keys(" India")
+
+driver.quit()
+      </script>
+    </div>
+
+    <!-- window.py -->
+    <div class="card">
+      <div><span class="tag">Windows</span></div>
+      <div class="title">window.py</div>
+      <div class="scenario">Open multiple windows/tabs, switch to non-original window.</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+driver = webdriver.Chrome()
+driver.get("https://www.facebook.com")
+wait = WebDriverWait(driver,10)
+
+original_window = driver.current_window_handle
+
+driver.switch_to.new_window('window')
+wait.until(EC.number_of_windows_to_be(2))
+
+driver.execute_script("window.open('https://www.google.com/')")
+wait.until(EC.number_of_windows_to_be(3))
+
+all_windows = driver.window_handles
+for window in all_windows:
+    if window != original_window:
+        driver.switch_to.window(window)
+        break
+
+driver.quit()
+
+#Homework: Try with two different drivers
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('window_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="window_py">
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+driver = webdriver.Chrome()
+driver.get("https://www.facebook.com")
+wait = WebDriverWait(driver,10)
+
+original_window = driver.current_window_handle
+
+driver.switch_to.new_window('window')
+wait.until(EC.number_of_windows_to_be(2))
+
+driver.execute_script("window.open('https://www.google.com/')")
+wait.until(EC.number_of_windows_to_be(3))
+
+all_windows = driver.window_handles
+for window in all_windows:
+    if window != original_window:
+        driver.switch_to.window(window)
+        break
+
+driver.quit()
+
+#Homework: Try with two different drivers
+      </script>
+    </div>
+
+    <!-- windowc.py -->
+    <div class="card">
+      <div><span class="tag">Windows</span></div>
+      <div class="title">windowc.py</div>
+      <div class="scenario">Verbose window handling with prints and pauses for observation.</div>
+      <div class="code-preview">
+import time
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+# Launch Chrome
+driver = webdriver.Chrome()
+wait = WebDriverWait(driver, 10)
+
+# Open Facebook in the first window
+driver.get("https://www.facebook.com")
+print("Opened Facebook")
+time.sleep(3)
+
+# Store the original window handle
+original_window = driver.current_window_handle
+print(">>> Original window handle:", original_window, type(original_window))
+
+# Open a new browser window
+driver.switch_to.new_window('window')
+wait.until(EC.number_of_windows_to_be(2))
+print("Opened a new blank window")
+time.sleep(3)
+
+# Open Google in a new tab using JavaScript
+driver.execute_script("window.open('https://www.google.com/')")
+wait.until(EC.number_of_windows_to_be(3))
+print("Opened Google in a new tab")
+time.sleep(3)
+
+# Get all window handles
+all_windows = driver.window_handles
+print(">>> All window handles:", all_windows, type(all_windows))
+
+# Switch to the first non-original window
+for window in all_windows:
+    if window != original_window:
+        driver.switch_to.window(window)
+        print("Switched to window/tab:", driver.title)
+        time.sleep(3)
+        break
+
+# Keep everything open for a bit
+print("Pausing for you to observe the windows...")
+time.sleep(10)
+
+# Close all windows and quit session
+driver.quit()
+print("Closed all windows and ended session")
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('windowc_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="windowc_py">
+import time
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+# Launch Chrome
+driver = webdriver.Chrome()
+wait = WebDriverWait(driver, 10)
+
+# Open Facebook in the first window
+driver.get("https://www.facebook.com")
+print("Opened Facebook")
+time.sleep(3)
+
+# Store the original window handle
+original_window = driver.current_window_handle
+print(">>> Original window handle:", original_window, type(original_window))
+
+# Open a new browser window
+driver.switch_to.new_window('window')
+wait.until(EC.number_of_windows_to_be(2))
+print("Opened a new blank window")
+time.sleep(3)
+
+# Open Google in a new tab using JavaScript
+driver.execute_script("window.open('https://www.google.com/')")
+wait.until(EC.number_of_windows_to_be(3))
+print("Opened Google in a new tab")
+time.sleep(3)
+
+# Get all window handles
+all_windows = driver.window_handles
+print(">>> All window handles:", all_windows, type(all_windows))
+
+# Switch to the first non-original window
+for window in all_windows:
+    if window != original_window:
+        driver.switch_to.window(window)
+        print("Switched to window/tab:", driver.title)
+        time.sleep(3)
+        break
+
+# Keep everything open for a bit
+print("Pausing for you to observe the windows...")
+time.sleep(10)
+
+# Close all windows and quit session
+driver.quit()
+print("Closed all windows and ended session")
+      </script>
+    </div>
+
+    <!-- attribute.py -->
+    <div class="card">
+      <div><span class="tag">Attributes</span></div>
+      <div class="title">attribute.py</div>
+      <div class="scenario">Prints attribute values like autocomplete, id and value before/after typing.</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.common import TimeoutException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+driver = webdriver.Chrome()
+driver.get("https://www.google.com")
+search_box =driver.find_element(By.NAME, "q")
+
+print("autocomplete:",search_box.get_attribute("autocomplete"))
+print("id",search_box.get_attribute("id"))
+
+print("value(before typing):",search_box.get_attribute("value"))
+search_box.send_keys("IMCC")
+print("value(after typing):",search_box.get_attribute("value"))
+
+driver.quit()
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('attribute_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="attribute_py">
+from selenium import webdriver
+from selenium.common import TimeoutException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+driver = webdriver.Chrome()
+driver.get("https://www.google.com")
+search_box =driver.find_element(By.NAME, "q")
+
+print("autocomplete:",search_box.get_attribute("autocomplete"))
+print("id",search_box.get_attribute("id"))
+
+print("value(before typing):",search_box.get_attribute("value"))
+search_box.send_keys("IMCC")
+print("value(after typing):",search_box.get_attribute("value"))
+
+driver.quit()
+      </script>
+    </div>
+
+    <!-- facbook.com.py (renamed facebook_site.py) -->
+    <div class="card">
+      <div><span class="tag">Facebook</span></div>
+      <div class="title">facebook_site.py (was facbook.com.py)</div>
+      <div class="scenario">Complete create account flow with waits and dummy data.</div>
+      <div class="code-preview">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+
+driver = webdriver.Chrome()
+driver.get("https://facebook.com")
+wait=WebDriverWait(driver,10)
+
+create_account_button=wait.until(EC.element_to_be_clickable((By.LINK_TEXT ,"Create new account")))
+create_account_button.click()
+registration_form = wait.until(EC.visibility_of_element_located((By.XPATH ,'//form[@id="reg"]')))
+
+#continue from previous page code#
+first_name = wait.until(EC.presence_of_element_located((By.NAME,"firstname")))
+last_name = wait.until(EC.presence_of_element_located((By.NAME,"lastname")))
+mobile_number=wait.until(EC.presence_of_element_located((By.NAME,"reg_email__")))
+password = wait.until(EC.presence_of_element_located((By.NAME,"reg_passwd__")))
+
+first_name.send_keys("YourName")
+last_name.send_keys("YourSurname")
+mobile_number.send_keys("1234567890")
+password.send_keys("SecurePassword123")
+
+day=wait.until(EC.presence_of_element_located((By.ID,"day")))
+month=wait.until(EC.presence_of_element_located((By.ID,"month")))
+year=wait.until(EC.presence_of_element_located((By.ID,"year")))
+
+day.send_keys("6")
+month.send_keys("Sep")
+year.send_keys("1990")
+time.sleep(5)
+
+gender_male=wait.until(EC.presence_of_element_located((By.XPATH,"//input[@value='2']")))
+gender_female=wait.until(EC.presence_of_element_located((By.XPATH,"//input[@value='1']")))
+gender_custom=wait.until(EC.presence_of_element_located((By.XPATH,"//input[@value='-1']")))
+
+gender_male.click()
+# gender_female.click()
+# gender_custom.click()
+
+sign_up_button = wait.until(EC.presence_of_element_located((By.NAME,"websubmit")))
+sign_up_button.click()
+
+confirmation_message_wait= WebDriverWait(driver,120)
+confirmation_message = confirmation_message_wait.until(
+    EC.presence_of_element_located((By.XPATH,"//div[contains(text(),'conformation')]")))
+print("User created successfully")
+# driver.close()
+# driver.quit()
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('facebook_site_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="facebook_site_py">
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+
+driver = webdriver.Chrome()
+driver.get("https://facebook.com")
+wait=WebDriverWait(driver,10)
+
+create_account_button=wait.until(EC.element_to_be_clickable((By.LINK_TEXT ,"Create new account")))
+create_account_button.click()
+registration_form = wait.until(EC.visibility_of_element_located((By.XPATH ,'//form[@id="reg"]')))
+
+#continue from previous page code#
+first_name = wait.until(EC.presence_of_element_located((By.NAME,"firstname")))
+last_name = wait.until(EC.presence_of_element_located((By.NAME,"lastname")))
+mobile_number=wait.until(EC.presence_of_element_located((By.NAME,"reg_email__")))
+password = wait.until(EC.presence_of_element_located((By.NAME,"reg_passwd__")))
+
+first_name.send_keys("YourName")
+last_name.send_keys("YourSurname")
+mobile_number.send_keys("1234567890")
+password.send_keys("SecurePassword123")
+
+day=wait.until(EC.presence_of_element_located((By.ID,"day")))
+month=wait.until(EC.presence_of_element_located((By.ID,"month")))
+year=wait.until(EC.presence_of_element_located((By.ID,"year")))
+
+day.send_keys("6")
+month.send_keys("Sep")
+year.send_keys("1990")
+time.sleep(5)
+
+gender_male=wait.until(EC.presence_of_element_located((By.XPATH,"//input[@value='2']")))
+gender_female=wait.until(EC.presence_of_element_located((By.XPATH,"//input[@value='1']")))
+gender_custom=wait.until(EC.presence_of_element_located((By.XPATH,"//input[@value='-1']")))
+
+gender_male.click()
+# gender_female.click()
+# gender_custom.click()
+
+sign_up_button = wait.until(EC.presence_of_element_located((By.NAME,"websubmit")))
+sign_up_button.click()
+
+confirmation_message_wait= WebDriverWait(driver,120)
+confirmation_message = confirmation_message_wait.until(
+    EC.presence_of_element_located((By.XPATH,"//div[contains(text(),'conformation')]")))
+print("User created successfully")
+# driver.close()
+# driver.quit()
+      </script>
+    </div>
+
+    <!-- facebook2.py -->
+    <div class="card">
+      <div><span class="tag">Windows</span></div>
+      <div class="title">facebook2.py</div>
+      <div class="scenario">Open new window & tabs and switch to a non-original window (prints handles).</div>
+      <div class="code-preview">
+import time
+
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+driver = webdriver.Chrome()
+driver.get("https://www.facebook.com")
+time.sleep(2)
+
+# explicit wait
+wait = WebDriverWait(driver, 10)
+
+# get current window handle
+original_window = driver.current_window_handle
+print(original_window, type(original_window))  # this prints the handle (a string)
+
+# open a new empty window
+driver.switch_to.new_window('window')
+
+# wait until the number of windows becomes 2
+wait.until(EC.number_of_windows_to_be(2))
+time.sleep(2)
+
+# open Google in a new tab
+driver.execute_script("window.open('http://www.google.com/');")
+
+# wait until the number of windows becomes 3
+wait.until(EC.number_of_windows_to_be(3))
+
+# get all window handles
+all_windows = driver.window_handles
+print(all_windows, type(all_windows))  # prints list of window handles
+
+# switch to any window that is not the original one
+for window in all_windows:
+    if window != original_window:
+        driver.switch_to.window(window)
+        break
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('facebook2_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="facebook2_py">
+import time
+
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+driver = webdriver.Chrome()
+driver.get("https://www.facebook.com")
+time.sleep(2)
+
+# explicit wait
+wait = WebDriverWait(driver, 10)
+
+# get current window handle
+original_window = driver.current_window_handle
+print(original_window, type(original_window))  # this prints the handle (a string)
+
+# open a new empty window
+driver.switch_to.new_window('window')
+
+# wait until the number of windows becomes 2
+wait.until(EC.number_of_windows_to_be(2))
+time.sleep(2)
+
+# open Google in a new tab
+driver.execute_script("window.open('http://www.google.com/');")
+
+# wait until the number of windows becomes 3
+wait.until(EC.number_of_windows_to_be(3))
+
+# get all window handles
+all_windows = driver.window_handles
+print(all_windows, type(all_windows))  # prints list of window handles
+
+# switch to any window that is not the original one
+for window in all_windows:
+    if window != original_window:
+        driver.switch_to.window(window)
+        break
+      </script>
+    </div>
+
+    <!-- new.py -->
+    <div class="card">
+      <div><span class="tag">Waits</span></div>
+      <div class="title">new.py</div>
+      <div class="scenario">A playful waits example showing incorrect locators (Pavan/Ravan/Savan were placeholders).</div>
+      <div class="code-preview">
+from time import sleep
+from re import search
+
+from selenium import webdriver
+from selenium.common import TimeoutException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+driver = webdriver.Chrome()
+driver.get("https://www.google.com")
+
+driver.implicitly_wait(15)
+
+search_box=driver.find_element(By.NAME,"Pavan")
+search_box.send_keys("Pune")
+
+wait = WebDriverWait(driver, 15)
+search_box_explicit = wait.until(EC.presence_of_element_located((By.NAME,"Ravan")))
+
+search_box_explicit.send_keys("Maharashtra")
+
+polling_wait = WebDriverWait(driver, 20,poll_frequency=3,ignored_exceptions=[Exception])
+
+search_box_polling= polling_wait.until(EC.visibility_of_element_located((By.NAME,"Savan")))
+
+search_box_polling.send_keys("India")
+
+driver.quit()
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('new_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="new_py">
+from time import sleep
+from re import search
+
+from selenium import webdriver
+from selenium.common import TimeoutException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+driver = webdriver.Chrome()
+driver.get("https://www.google.com")
+
+driver.implicitly_wait(15)
+
+search_box=driver.find_element(By.NAME,"Pavan")
+search_box.send_keys("Pune")
+
+wait = WebDriverWait(driver, 15)
+search_box_explicit = wait.until(EC.presence_of_element_located((By.NAME,"Ravan")))
+
+search_box_explicit.send_keys("Maharashtra")
+
+polling_wait = WebDriverWait(driver, 20,poll_frequency=3,ignored_exceptions=[Exception])
+
+search_box_polling= polling_wait.until(EC.visibility_of_element_located((By.NAME,"Savan")))
+
+search_box_polling.send_keys("India")
+
+driver.quit()
+      </script>
+    </div>
+
+    <!-- stqa_1.py -->
+    <div class="card">
+      <div><span class="tag">Misc</span></div>
+      <div class="title">stqa_1.py</div>
+      <div class="scenario">Prints current URL, title, and page source length for Google (dated 2025-09-10).</div>
+      <div class="code-preview">
+#from selenium import webdriver
+
+# webdriver.Chrome().get('https://www.google.com')
+
+#10-09-2025
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
+driver = webdriver.Chrome()
+driver.get("https://google.com")
+# driver.refresh()
+# driver.forward()
+# driver.back()
+
+# Print current URL, title, and page source
+print("Current URL:", driver.current_url)
+print("Page Title:", driver.title)
+print("Page Source Length:", len(driver.page_source))  # Just showing length, not full HTML
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('stqa1_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="stqa1_py">
+#from selenium import webdriver
+
+# webdriver.Chrome().get('https://www.google.com')
+
+#10-09-2025
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
+driver = webdriver.Chrome()
+driver.get("https://google.com")
+# driver.refresh()
+# driver.forward()
+# driver.back()
+
+# Print current URL, title, and page source
+print("Current URL:", driver.current_url)
+print("Page Title:", driver.title)
+print("Page Source Length:", len(driver.page_source))  # Just showing length, not full HTML
+      </script>
+    </div>
+
+    <!-- test.py -->
+    <div class="card">
+      <div><span class="tag">Misc</span></div>
+      <div class="title">test.py</div>
+      <div class="scenario">Basic navigation: refresh, go to YouTube, back/forward; demonstration print.</div>
+      <div class="code-preview">
+from concurrent.futures import thread
+
+from selenium import webdriver
+from selenium.webdriver import Keys
+from selenium.webdriver.common.by import By
+
+driver=webdriver.Chrome()
+driver.get("https://www.google.com/")
+driver.refresh()
+driver.get("www.youtube.com")
+driver.refresh()
+driver.backward()
+driver.forward()
+#print(driver.page_source)
+
+#driver.maximize_window()
+#driver.quit()
+#search_txtbox = driver.find_element(By.XPATH,"//textarea[@name='q']")
+#search_txtbox.send_keys("IMCC")
+
+#driver.get()
+#driver.send_keys(Keys.ENTER)
+print("Press enter to continue...")
+      </div>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyCode('test_py', this)">Copy Python</button>
+      </div>
+      <script type="text/plain" id="test_py">
+from concurrent.futures import thread
+
+from selenium import webdriver
+from selenium.webdriver import Keys
+from selenium.webdriver.common.by import By
+
+driver=webdriver.Chrome()
+driver.get("https://www.google.com/")
+driver.refresh()
+driver.get("www.youtube.com")
+driver.refresh()
+driver.backward()
+driver.forward()
+#print(driver.page_source)
+
+#driver.maximize_window()
+#driver.quit()
+#search_txtbox = driver.find_element(By.XPATH,"//textarea[@name='q']")
+#search_txtbox.send_keys("IMCC")
+
+#driver.get()
+#driver.send_keys(Keys.ENTER)
+print("Press enter to continue...")
+      </script>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>All scripts included as uploaded. Duplicated filenames were slightly adjusted to keep card IDs unique (e.g., alert_v2.py, facebook_site.py).</p>
+  </footer>
+
+  <script>
+    async function copyCode(id, btn) {
+      try {
+        const el = document.getElementById(id);
+        const text = el ? el.textContent.trim() : '';
+        await navigator.clipboard.writeText(text);
+        const original = btn.textContent;
+        btn.classList.add('copied');
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.classList.remove('copied'); btn.textContent = original; }, 1200);
+      } catch (e) {
+        // fallback
+        const ta = document.createElement('textarea');
+        ta.value = document.getElementById(id).textContent.trim();
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        const original = btn.textContent;
+        btn.classList.add('copied');
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.classList.remove('copied'); btn.textContent = original; }, 1200);
+      }
+    }
+  </script>
+</body>
+</html>
